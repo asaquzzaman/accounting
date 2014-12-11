@@ -165,14 +165,23 @@ class WeDevs_ERP_Accounting {
         add_submenu_page( 'erp-accounting', __( 'Dashboard', 'wp-erp' ), __( 'Dashboard', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ) );
         add_submenu_page( 'erp-accounting', __( 'Quotes', 'wp-erp' ), __( 'Quotes', 'wp-erp' ), 'manage_options', 'erp-accounting-quotes', array( $this, 'dashboard_page' ) );
         add_submenu_page( 'erp-accounting', __( 'Invoices', 'wp-erp' ), __( 'Invoices', 'wp-erp' ), 'manage_options', 'erp-accounting-invoices', array( $this, 'dashboard_page' ) );
-        add_submenu_page( 'erp-accounting', __( 'Suppliers', 'wp-erp' ), __( 'Suppliers', 'wp-erp' ), 'manage_options', 'erp-accounting-suppliers', array( $this, 'dashboard_page' ) );
+        add_submenu_page( 'erp-accounting', __( 'Vendors', 'wp-erp' ), __( 'Vendors', 'wp-erp' ), 'manage_options', 'erp-accounting-vendors', array( $this, 'page_vendors' ) );
         add_submenu_page( 'erp-accounting', __( 'Purchases', 'wp-erp' ), __( 'Purchases', 'wp-erp' ), 'manage_options', 'erp-accounting-purchases', array( $this, 'dashboard_page' ) );
+        add_submenu_page( 'erp-accounting', __( 'Chart of Accounts', 'wp-erp' ), __( 'Chart of Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-charts', array( $this, 'page_chart_of_accounting' ) );
         add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'dashboard_page' ) );
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'dashboard_page' ) );
     }
 
     public function dashboard_page() {
         # code...
+    }
+
+    public function page_vendors() {
+        include dirname( __FILE__ ) . '/views/vendors.php';
+    }
+
+    public function page_chart_of_accounting() {
+        include dirname( __FILE__ ) . '/views/chart-of-accounts.php';
     }
 
 } // WeDevs_ERP_Accounting
