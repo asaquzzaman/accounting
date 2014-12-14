@@ -1,6 +1,11 @@
 <div class="wrap">
 
-    <h2>Invoices <a href="#" class="add-new-h2">New Invoice</a> <a href="#" class="add-new-h2">New Credit Note</a></h2>
+    <h2>
+        <?php _e( 'Invoices', 'accounting' ); ?>
+        <a href="#" class="add-new-h2">New Invoice</a>
+        <a href="#" class="add-new-h2">New Quote</a>
+        <a href="#" class="add-new-h2">New Credit Note</a>
+    </h2>
 
 <?php
 $invoices =
