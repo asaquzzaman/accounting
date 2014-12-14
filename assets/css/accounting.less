@@ -1,0 +1,135 @@
+.clearfix() {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+// invoice
+.erp-account-dashboard {
+    .module {
+        margin-top: 20px;
+        padding: 25px;
+        border: 1px solid #eee;
+        max-width: 80%;
+        background: #fff;
+
+        .header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            .clearfix();
+
+            .title {
+                font-size: 22px;
+                font-weight: 600;
+                float: left;
+            }
+
+            .text {
+                float: right;
+                color: #999;
+            }
+        }
+
+        &.income .chart-container {
+            position: relative;
+            .clearfix();
+
+            .top-bar {
+                height: 45px;
+                background-color: #56b349;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .bar-text {
+                margin: 65px 0 0 0;
+
+                .price {
+                    font-size: 24px;
+                }
+
+                .text {
+                    text-transform: uppercase;
+                    color: #999;
+                    padding: 10px 0 0 0;
+                }
+            }
+
+            .open-container {
+                float: left;
+                width: 66%;
+
+                .open-area, .due-area {
+                    float: left;
+                }
+
+                .open-area {
+                    width: 49%;
+
+                    .top-bar {
+                        background-color: #EFB328;
+                        width: 65%;
+                    }
+                }
+
+                .due-area {
+                    width: 42%;
+
+                    .top-bar {
+                        background-color: #e33d43;
+                        width: 30%;
+                        left: 33%;
+                    }
+                }
+            }
+
+            .paid-container {
+                width: 33%;
+                float: left;
+                margin-left: 5px;
+
+                .top-bar {
+                    background-color: #56b349;
+                    width: 33%;
+                    left: 66%;
+                }
+            }
+        }
+
+        &.expense {
+
+            .module-content {
+                .clearfix();
+                margin-top: 40px;
+            }
+
+            .expense-value {
+                width: 33%;
+                float: left;
+
+                .price {
+                    font-size: 24px;
+                }
+
+                .text {
+                    text-transform: uppercase;
+                    color: #999;
+                    padding: 10px 0 0 0;
+                }
+            }
+
+            .expense-cat-chart {
+                width: 66%;
+                float: left;
+            }
+        }
+    }
+}

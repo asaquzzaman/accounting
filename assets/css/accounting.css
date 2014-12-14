@@ -1,0 +1,118 @@
+.erp-account-dashboard .module {
+  margin-top: 20px;
+  padding: 25px;
+  border: 1px solid #eee;
+  max-width: 80%;
+  background: #fff;
+}
+.erp-account-dashboard .module .header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+.erp-account-dashboard .module .header:before,
+.erp-account-dashboard .module .header:after {
+  content: " ";
+  display: table;
+}
+.erp-account-dashboard .module .header:after {
+  clear: both;
+}
+.erp-account-dashboard .module .header .title {
+  font-size: 22px;
+  font-weight: 600;
+  float: left;
+}
+.erp-account-dashboard .module .header .text {
+  float: right;
+  color: #999;
+}
+.erp-account-dashboard .module.income .chart-container {
+  position: relative;
+}
+.erp-account-dashboard .module.income .chart-container:before,
+.erp-account-dashboard .module.income .chart-container:after {
+  content: " ";
+  display: table;
+}
+.erp-account-dashboard .module.income .chart-container:after {
+  clear: both;
+}
+.erp-account-dashboard .module.income .chart-container .top-bar {
+  height: 45px;
+  background-color: #56b349;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.erp-account-dashboard .module.income .chart-container .bar-text {
+  margin: 65px 0 0 0;
+}
+.erp-account-dashboard .module.income .chart-container .bar-text .price {
+  font-size: 24px;
+}
+.erp-account-dashboard .module.income .chart-container .bar-text .text {
+  text-transform: uppercase;
+  color: #999;
+  padding: 10px 0 0 0;
+}
+.erp-account-dashboard .module.income .chart-container .open-container {
+  float: left;
+  width: 66%;
+}
+.erp-account-dashboard .module.income .chart-container .open-container .open-area,
+.erp-account-dashboard .module.income .chart-container .open-container .due-area {
+  float: left;
+}
+.erp-account-dashboard .module.income .chart-container .open-container .open-area {
+  width: 49%;
+}
+.erp-account-dashboard .module.income .chart-container .open-container .open-area .top-bar {
+  background-color: #EFB328;
+  width: 65%;
+}
+.erp-account-dashboard .module.income .chart-container .open-container .due-area {
+  width: 42%;
+}
+.erp-account-dashboard .module.income .chart-container .open-container .due-area .top-bar {
+  background-color: #e33d43;
+  width: 30%;
+  left: 33%;
+}
+.erp-account-dashboard .module.income .chart-container .paid-container {
+  width: 33%;
+  float: left;
+  margin-left: 5px;
+}
+.erp-account-dashboard .module.income .chart-container .paid-container .top-bar {
+  background-color: #56b349;
+  width: 33%;
+  left: 66%;
+}
+.erp-account-dashboard .module.expense .module-content {
+  margin-top: 40px;
+}
+.erp-account-dashboard .module.expense .module-content:before,
+.erp-account-dashboard .module.expense .module-content:after {
+  content: " ";
+  display: table;
+}
+.erp-account-dashboard .module.expense .module-content:after {
+  clear: both;
+}
+.erp-account-dashboard .module.expense .expense-value {
+  width: 33%;
+  float: left;
+}
+.erp-account-dashboard .module.expense .expense-value .price {
+  font-size: 24px;
+}
+.erp-account-dashboard .module.expense .expense-value .text {
+  text-transform: uppercase;
+  color: #999;
+  padding: 10px 0 0 0;
+}
+.erp-account-dashboard .module.expense .expense-cat-chart {
+  width: 66%;
+  float: left;
+}

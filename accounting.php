@@ -116,7 +116,9 @@ class WeDevs_ERP_Accounting {
      * @return void
      */
     private function define_constants() {
-
+        define( 'WPERP_ACCOUNTING_PATH', dirname( __FILE__ ) );
+        define( 'WPERP_ACCOUNTING_URL', plugins_url( '', __FILE__ ) );
+        define( 'WPERP_ACCOUNTING_ASSETS', WPERP_ACCOUNTING_URL . '/assets' );
     }
 
     /**
@@ -135,6 +137,7 @@ class WeDevs_ERP_Accounting {
      */
     public function init_actions() {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
     /**
@@ -174,8 +177,12 @@ class WeDevs_ERP_Accounting {
         add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
     }
 
+    public function enqueue_scripts() {
+        wp_enqueue_style( 'wp-erp-acc-styles', WPERP_ACCOUNTING_ASSETS . '/css/accounting.css', false, date( 'Ymd' ) );
+    }
+
     public function dashboard_page() {
-        # code...
+        include dirname( __FILE__ ) . '/views/dashboard.php';
     }
 
     public function page_customers() {
