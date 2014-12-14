@@ -506,6 +506,23 @@ array (
             </tr>
         </thead>
 
+        <tfoot>
+            <tr>
+                <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
+                    <input id="cb-select-all-1" type="checkbox">
+                </th>
+                <th class="col-inv-no"><?php _e( 'Number', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'Ref', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'Contact', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Date', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Due Date', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Paid', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Due', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Status', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Sent', 'accounting' ); ?></th>
+            </tr>
+        </tfoot>
+
         <tbody id="the-list">
             <?php foreach( $invoices as $num => $row ) { ?>
             <tr class="<?php echo $num % 2 == 0 ? 'alternate' : 'odd'; ?>">

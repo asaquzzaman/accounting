@@ -38,6 +38,18 @@ $vendors = array(
             </tr>
         </thead>
 
+        <tfoot>
+            <tr>
+                <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
+                    <input id="cb-select-all-1" type="checkbox">
+                </th>
+                <th class="col-username"><?php _e( 'Customer', 'accounting' ); ?></th>
+                <th class="col-company"><?php _e( 'Company', 'accounting' ); ?></th>
+                <th class="col-email"><?php _e( 'Email', 'accounting' ); ?></th>
+                <th class="col-balance"><?php _e( 'Open Balance', 'accounting' ); ?></th>
+            </tr>
+        </tfoot>
+
         <tbody id="the-list">
             <?php foreach( $vendors as $num => $row ) { ?>
             <tr class="<?php echo $num % 2 == 0 ? 'alternate' : 'odd'; ?>">
