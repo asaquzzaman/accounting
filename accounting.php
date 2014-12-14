@@ -163,12 +163,13 @@ class WeDevs_ERP_Accounting {
         add_menu_page( __( 'Accounting', 'wp-erp' ), __( 'Accounting', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ), 'dashicons-chart-pie', null );
 
         add_submenu_page( 'erp-accounting', __( 'Dashboard', 'wp-erp' ), __( 'Dashboard', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ) );
+        add_submenu_page( 'erp-accounting', __( 'Customers', 'wp-erp' ), __( 'Customers', 'wp-erp' ), 'manage_options', 'erp-accounting-customers', array( $this, 'page_customers' ) );
         add_submenu_page( 'erp-accounting', __( 'Vendors', 'wp-erp' ), __( 'Vendors', 'wp-erp' ), 'manage_options', 'erp-accounting-vendors', array( $this, 'page_vendors' ) );
         add_submenu_page( 'erp-accounting', __( 'Quotes', 'wp-erp' ), __( 'Quotes', 'wp-erp' ), 'manage_options', 'erp-accounting-quotes', array( $this, 'dashboard_page' ) );
-        add_submenu_page( 'erp-accounting', __( 'Invoices', 'wp-erp' ), __( 'Invoices', 'wp-erp' ), 'manage_options', 'erp-accounting-invoices', array( $this, 'page_invoices' ) );
+        add_submenu_page( 'erp-accounting', __( 'Sales', 'wp-erp' ), __( 'Sales', 'wp-erp' ), 'manage_options', 'erp-accounting-invoices', array( $this, 'page_invoices' ) );
         add_submenu_page( 'erp-accounting', __( 'Purchases', 'wp-erp' ), __( 'Purchases', 'wp-erp' ), 'manage_options', 'erp-accounting-purchases', array( $this, 'page_purchase' ) );
         add_submenu_page( 'erp-accounting', __( 'Chart of Accounts', 'wp-erp' ), __( 'Chart of Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-charts', array( $this, 'page_chart_of_accounting' ) );
-        add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'dashboard_page' ) );
+        add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'dashboard_page' ) );
     }
 
@@ -184,8 +185,16 @@ class WeDevs_ERP_Accounting {
         include dirname( __FILE__ ) . '/views/purchases.php';
     }
 
+    public function page_customers() {
+        include dirname( __FILE__ ) . '/views/customers.php';
+    }
+
     public function page_vendors() {
         include dirname( __FILE__ ) . '/views/vendors.php';
+    }
+
+    public function page_reports() {
+        include dirname( __FILE__ ) . '/views/reports.php';
     }
 
     public function page_chart_of_accounting() {
