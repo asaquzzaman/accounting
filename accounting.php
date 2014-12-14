@@ -182,7 +182,7 @@ class WeDevs_ERP_Accounting {
     }
 
     public function dashboard_page() {
-        include dirname( __FILE__ ) . '/views/dashboard.php';
+        include dirname( __FILE__ ) . '/views/bank.php';
     }
 
     public function page_customers() {
