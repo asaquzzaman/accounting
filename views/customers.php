@@ -53,7 +53,6 @@ $vendors = array(
                         <span class="edit"><a href="#" title="Edit this item">Edit</a> | </span>
                         <span class="edit"><a href="#" title="Edit this item">Create Invoice</a> | </span>
                         <span class="edit"><a href="#" title="Edit this item">Create Expense</a> | </span>
-                        <span class="edit"><a href="#" title="Edit this item">Write Check</a> | </span>
                         <span class="trash"><a class="submitdelete" title="Delete this item" href="#">Delete</a></span>
                     </div>
                 </td>

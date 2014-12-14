@@ -169,20 +169,13 @@ class WeDevs_ERP_Accounting {
         add_submenu_page( 'erp-accounting', __( 'Sales', 'wp-erp' ), __( 'Sales', 'wp-erp' ), 'manage_options', 'erp-accounting-invoices', array( $this, 'page_invoices' ) );
         add_submenu_page( 'erp-accounting', __( 'Purchases', 'wp-erp' ), __( 'Purchases', 'wp-erp' ), 'manage_options', 'erp-accounting-purchases', array( $this, 'page_purchase' ) );
         add_submenu_page( 'erp-accounting', __( 'Chart of Accounts', 'wp-erp' ), __( 'Chart of Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-charts', array( $this, 'page_chart_of_accounting' ) );
-        add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
+        add_submenu_page( 'erp-accounting', __( 'Sales Tax', 'wp-erp' ), __( 'Sales Tax', 'wp-erp' ), 'manage_options', 'erp-accounting-tax', array( $this, 'page_tax' ) );
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'dashboard_page' ) );
+        add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
     }
 
     public function dashboard_page() {
         # code...
-    }
-
-    public function page_invoices() {
-        include dirname( __FILE__ ) . '/views/invoices.php';
-    }
-
-    public function page_purchase() {
-        include dirname( __FILE__ ) . '/views/purchases.php';
     }
 
     public function page_customers() {
@@ -193,12 +186,24 @@ class WeDevs_ERP_Accounting {
         include dirname( __FILE__ ) . '/views/vendors.php';
     }
 
-    public function page_reports() {
-        include dirname( __FILE__ ) . '/views/reports.php';
+    public function page_invoices() {
+        include dirname( __FILE__ ) . '/views/invoices.php';
+    }
+
+    public function page_purchase() {
+        include dirname( __FILE__ ) . '/views/purchases.php';
     }
 
     public function page_chart_of_accounting() {
         include dirname( __FILE__ ) . '/views/chart-of-accounts.php';
+    }
+
+    public function page_tax() {
+        include dirname( __FILE__ ) . '/views/tax.php';
+    }
+
+    public function page_reports() {
+        include dirname( __FILE__ ) . '/views/reports.php';
     }
 
 } // WeDevs_ERP_Accounting
