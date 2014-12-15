@@ -108,6 +108,7 @@ class WeDevs_ERP_Accounting {
         $this->includes();
 
         $this->init_actions();
+        $this->init_filters();
     }
 
     /**
@@ -138,6 +139,31 @@ class WeDevs_ERP_Accounting {
     public function init_actions() {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+    }
+
+    /**
+     * Init the plugin actions
+     *
+     * @return void
+     */
+    public function init_filters() {
+        add_action( 'erp_switch_redirect_to', array( $this, 'module_switch_redirect' ), 10, 2 );
+    }
+
+    /**
+     * Redirect to the accounting dashboard page when switching from admin menu bar
+     *
+     * @param  string  redirect url
+     * @param  string  new mode slug
+     *
+     * @return string  new url to redirect to
+     */
+    function module_switch_redirect( $url, $new_mode ) {
+        if ( 'accounting' == $new_mode ) {
+            return admin_url( 'admin.php?page=erp-accounting' );
+        }
+
+        return $url;
     }
 
     /**
