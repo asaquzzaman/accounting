@@ -82,6 +82,9 @@ class WeDevs_ERP_Accounting {
         // register the module
         add_filter( 'erp_get_modules', array( $this, 'register_module' ) );
 
+        // switch redirect
+        add_filter( 'erp_switch_redirect_to', array( $this, 'module_switch_redirect' ), 10, 2 );
+
         // load the module
         add_action( 'wp-erp-load-module_erp-accounting', array( $this, 'plugin_init' ) );
     }
@@ -147,7 +150,7 @@ class WeDevs_ERP_Accounting {
      * @return void
      */
     public function init_filters() {
-        add_action( 'erp_switch_redirect_to', array( $this, 'module_switch_redirect' ), 10, 2 );
+
     }
 
     /**
