@@ -1,7 +1,8 @@
 <div class="wrap">
 
     <h2>
-        <?php _e( 'Invoices', 'accounting' ); ?>
+        <?php _e( 'Sales Transactions', 'accounting' ); ?>
+        <a href="#" class="add-new-h2">New Payment</a>
         <a href="#" class="add-new-h2">New Invoice</a>
         <a href="#" class="add-new-h2">New Quote</a>
         <a href="#" class="add-new-h2">New Credit Note</a>
@@ -499,15 +500,14 @@ array (
                 <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
                     <input id="cb-select-all-1" type="checkbox">
                 </th>
-                <th class="col-inv-no"><?php _e( 'Number', 'accounting' ); ?></th>
-                <th class="col"><?php _e( 'Ref', 'accounting' ); ?></th>
-                <th class="col"><?php _e( 'Contact', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Date', 'accounting' ); ?></th>
+                <th class="col-inv-no"><?php _e( 'Date', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'Type', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'No', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Customer', 'accounting' ); ?></th>
                 <th class="col-"><?php _e( 'Due Date', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Paid', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Due', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Balance', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Total', 'accounting' ); ?></th>
                 <th class="col-"><?php _e( 'Status', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Sent', 'accounting' ); ?></th>
             </tr>
         </thead>
 
@@ -516,15 +516,14 @@ array (
                 <th scope="col" id="cb" class="manage-column column-cb check-column" style="">
                     <input id="cb-select-all-1" type="checkbox">
                 </th>
-                <th class="col-inv-no"><?php _e( 'Number', 'accounting' ); ?></th>
-                <th class="col"><?php _e( 'Ref', 'accounting' ); ?></th>
-                <th class="col"><?php _e( 'Contact', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Date', 'accounting' ); ?></th>
+                <th class="col-inv-no"><?php _e( 'Date', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'Type', 'accounting' ); ?></th>
+                <th class="col"><?php _e( 'No', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Customer', 'accounting' ); ?></th>
                 <th class="col-"><?php _e( 'Due Date', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Paid', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Due', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Balance', 'accounting' ); ?></th>
+                <th class="col-"><?php _e( 'Total', 'accounting' ); ?></th>
                 <th class="col-"><?php _e( 'Status', 'accounting' ); ?></th>
-                <th class="col-"><?php _e( 'Sent', 'accounting' ); ?></th>
             </tr>
         </tfoot>
 
@@ -535,23 +534,22 @@ array (
                     <input id="cb-select-1" type="checkbox" name="post[]" value="1">
                 </th>
                 <td class="username col-inv-no">
-                    <strong><a href="#"><?php echo $row['no']; ?></a></strong>
+                    <strong><a href="#"><?php echo $row['date']; ?></a></strong>
 
                     <div class="row-actions">
                         <span class="edit"><a href="#" title="Edit this item">Edit</a> | </span>
                         <span class="trash"><a class="submitdelete" title="Delete this item" href="#">Delete</a></span>
                     </div>
                 </td>
-                <td class="col-"><?php echo $row['ref']; ?></td>
+                <td class="col-"><?php echo isset( $row['type'] ) ? $row['type'] : 'Payment'; ?></td>
+                <td class="col-"><?php echo $row['no']; ?></td>
                 <td class="col-">
                     <a href="#"><?php echo $row['contact']; ?></a>
                 </td>
-                <td class="col-"><?php echo $row['date']; ?></td>
                 <td class="col-"><?php echo $row['due_date']; ?></td>
                 <td class="col-"><?php echo $row['paid']; ?></td>
                 <td class="col-"><?php echo $row['due']; ?></td>
                 <td class="col-"><?php echo $row['status']; ?></td>
-                <td class="col-"><?php echo $row['sent']; ?></td>
             </tr>
             <?php } ?>
         </tbody>
