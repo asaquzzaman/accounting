@@ -38,6 +38,8 @@
 // don't call the file directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+include dirname( __FILE__ ) . '/vendor/autoload.php';
+
 /**
  * WeDevs_ERP_Accounting class
  *
@@ -71,8 +73,6 @@ class WeDevs_ERP_Accounting {
      *
      * Sets up all the appropriate hooks and actions
      * within our plugin.
-     *
-     * @return void
      */
     public function __construct() {
 
@@ -132,7 +132,7 @@ class WeDevs_ERP_Accounting {
      * @return void
      */
     private function includes() {
-
+        require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';
     }
 
     /**
