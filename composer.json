@@ -1,0 +1,25 @@
+{
+    "name": "wp-erp/accounting",
+    "description": "Accounting module for WP ERP",
+    "keywords": ["wordpress", "plugin", "accounting"],
+    "homepage": "http://wperp.com",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Tareq Hasan",
+            "email": "tareq@wedevs.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "WeDevs\\ERP\\Accounting\\": "includes"
+        },
+        "classmap": [
+
+        ]
+    }
+}
