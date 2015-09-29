@@ -1,6 +1,9 @@
 <div class="wrap">
 
-    <h2>Bills <a href="#" class="add-new-h2">New Bill</a> <a href="#" class="add-new-h2">New Credit Note</a></h2>
+    <h2>
+        <?php _e( 'Expense Transactions', '$domain' ); ?>
+        <a href="<?php echo admin_url( 'admin.php?page=erp-accounting-expense&action=new&type=pv' ); ?>" class="add-new-h2"><?php _e( 'New Payment Voucher', '$domain' ); ?></a>
+    </h2>
 
 <?php
 $purchases = array (

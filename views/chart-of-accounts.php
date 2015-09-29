@@ -1,5 +1,11 @@
 <div class="wrap erp-accounting chart-of-accounts">
 
+    <?php
+
+    $charts = erp_ac_get_chart_dropdown( false, [ 'selected' => 14 ] );
+    echo $charts;
+    ?>
+
     <h2>Chart of Accounts</h2>
 
     <div class="metabox-holder">

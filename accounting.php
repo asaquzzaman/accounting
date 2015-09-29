@@ -227,7 +227,27 @@ class WeDevs_ERP_Accounting {
     }
 
     public function page_expenses() {
-        include dirname( __FILE__ ) . '/views/expenses.php';
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $type   = isset( $_GET['type'] ) ? $_GET['type'] : 'pv';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+
+        switch ($action) {
+            case 'new':
+
+                if ( $type == 'pv' ) {
+                    $template = dirname( __FILE__ ) . '/views/forms/payment-voucher.php';
+                }
+
+                break;
+
+            default:
+                $template = dirname( __FILE__ ) . '/views/expenses.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 
     public function page_chart_of_accounting() {
