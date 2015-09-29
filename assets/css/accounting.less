@@ -169,3 +169,52 @@
         }
     }
 }
+
+// accounting - will be moved
+table.erp-ac-form-table {
+    width: 100%;
+    table-layout: fixed;
+
+    td, th {
+        overflow: hidden;
+
+        input, select, textarea {
+            width: 100%;
+        }
+    }
+
+    th.col-unit-price,
+    th.col-amount,
+    td.col-unit-price,
+    td.col-amount {
+        width: 120px;
+
+        input {
+            text-align: right;
+        }
+    }
+
+    th.col-qty,
+    td.col-qty {
+        width: 50px;
+    }
+
+    th.col-action,
+    td.col-action {
+        width: 50px;
+        padding: 8px 0;
+
+        a {
+            color: #ccc;
+
+            &.move-row {
+                cursor: move;
+            }
+        }
+    }
+
+    th.col-discount,
+    td.col-discount {
+        width: 85px;
+    }
+}

@@ -141,3 +141,52 @@
 .erp-accounting.chart-of-accounts .postbox-container table.table .col-balance {
   text-align: right;
 }
+table.erp-ac-form-table {
+  width: 100%;
+  table-layout: fixed;
+}
+table.erp-ac-form-table td,
+table.erp-ac-form-table th {
+  overflow: hidden;
+}
+table.erp-ac-form-table td input,
+table.erp-ac-form-table th input,
+table.erp-ac-form-table td select,
+table.erp-ac-form-table th select,
+table.erp-ac-form-table td textarea,
+table.erp-ac-form-table th textarea {
+  width: 100%;
+}
+table.erp-ac-form-table th.col-unit-price,
+table.erp-ac-form-table th.col-amount,
+table.erp-ac-form-table td.col-unit-price,
+table.erp-ac-form-table td.col-amount {
+  width: 120px;
+}
+table.erp-ac-form-table th.col-unit-price input,
+table.erp-ac-form-table th.col-amount input,
+table.erp-ac-form-table td.col-unit-price input,
+table.erp-ac-form-table td.col-amount input {
+  text-align: right;
+}
+table.erp-ac-form-table th.col-qty,
+table.erp-ac-form-table td.col-qty {
+  width: 50px;
+}
+table.erp-ac-form-table th.col-action,
+table.erp-ac-form-table td.col-action {
+  width: 50px;
+  padding: 8px 0;
+}
+table.erp-ac-form-table th.col-action a,
+table.erp-ac-form-table td.col-action a {
+  color: #ccc;
+}
+table.erp-ac-form-table th.col-action a.move-row,
+table.erp-ac-form-table td.col-action a.move-row {
+  cursor: move;
+}
+table.erp-ac-form-table th.col-discount,
+table.erp-ac-form-table td.col-discount {
+  width: 85px;
+}
