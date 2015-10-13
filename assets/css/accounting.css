@@ -190,3 +190,13 @@ table.erp-ac-form-table th.col-discount,
 table.erp-ac-form-table td.col-discount {
   width: 85px;
 }
+table.vendor-list-table td.column-customer,
+table.vendor-list-table th.column-customer {
+  width: 35%;
+}
+table.vendor-list-table td.column-customer img,
+table.vendor-list-table th.column-customer img {
+  float: left;
+  margin-right: 10px;
+  margin-top: 1px;
+}
