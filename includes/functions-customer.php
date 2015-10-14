@@ -23,7 +23,7 @@ function erp_ac_get_all_customer( $args = array() ) {
     $items     = wp_cache_get( $cache_key, 'wp-erp-ac' );
 
     if ( false === $items ) {
-        $items = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->prefix . 'erp_as_customers WHERE type = "' . $args['type'] . '" ORDER BY ' . $args['orderby'] .' ' . $args['order'] .' LIMIT ' . $args['offset'] . ', ' . $args['number'] );
+        $items = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->prefix . 'erp_ac_customers WHERE type = "' . $args['type'] . '" ORDER BY ' . $args['orderby'] .' ' . $args['order'] .' LIMIT ' . $args['offset'] . ', ' . $args['number'] );
 
         wp_cache_set( $cache_key, $items, 'wp-erp-ac' );
     }
@@ -39,7 +39,7 @@ function erp_ac_get_all_customer( $args = array() ) {
 function erp_ac_get_customer_count( $type = 'customer' ) {
     global $wpdb;
 
-    return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'erp_as_customers WHERE type = %s', $type ) );
+    return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'erp_ac_customers WHERE type = %s', $type ) );
 }
 
 /**
@@ -52,7 +52,7 @@ function erp_ac_get_customer_count( $type = 'customer' ) {
 function erp_ac_get_customer( $id = 0 ) {
     global $wpdb;
 
-    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'erp_as_customers WHERE id = %d', $id ) );
+    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'erp_ac_customers WHERE id = %d', $id ) );
 }
 
 /**
@@ -85,7 +85,7 @@ function erp_ac_insert_customer( $args = array() ) {
     );
 
     $args       = wp_parse_args( $args, $defaults );
-    $table_name = $wpdb->prefix . 'erp_as_customers';
+    $table_name = $wpdb->prefix . 'erp_ac_customers';
 
     // some basic validation
     if ( empty( $args['first_name'] ) ) {

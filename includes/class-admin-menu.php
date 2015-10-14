@@ -65,7 +65,31 @@ class Admin_Menu {
     }
 
     public function page_chart_of_accounting() {
-        include dirname( __FILE__ ) . '/views/chart-of-accounts.php';
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+
+        switch ($action) {
+            case 'view':
+
+                $template = dirname( __FILE__ ) . '/views/accounts/single.php';
+                break;
+
+            case 'edit':
+                $template = dirname( __FILE__ ) . '/views/accounts/edit.php';
+                break;
+
+            case 'new':
+                $template = dirname( __FILE__ ) . '/views/accounts/new.php';
+                break;
+
+            default:
+                $template = dirname( __FILE__ ) . '/views/chart-of-accounts.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 
     public function page_tax() {

@@ -1,4 +1,4 @@
-<ol class="erp-form-fields">
+<ul class="erp-form-fields erp-list">
     <li class="erp-form-field row-first-name">
         <?php erp_html_form_input( array(
             'label'       => __( 'First Name', 'erp-accounting' ),
@@ -7,7 +7,6 @@
             'required'    => true,
             'type'        => 'text',
             'placeholder' => __( 'John', 'erp-accounting' ),
-            'help'        => __( 'Your first name', 'erp-accounting' ),
             'class'       => 'regular-text',
             'value'       => isset( $item->first_name ) ? $item->first_name : ''
         ) ); ?>
@@ -20,7 +19,6 @@
             'required'    => true,
             'type'        => 'text',
             'placeholder' => __( 'Doe', 'erp-accounting' ),
-            'help'        => __( 'Your Last Name', 'erp-accounting' ),
             'class'       => 'regular-text',
             'value'       => isset( $item->last_name ) ? $item->last_name : '',
         ) ); ?>
@@ -184,10 +182,9 @@
             'name'        => 'currency',
             'id'          => 'currency',
             'required'    => false,
-            'type'        => 'text',
-            'placeholder' => __( 'USD', 'erp-accounting' ),
-            'class'       => 'regular-text',
+            'type'        => 'select',
+            'options'     => erp_get_currencies(),
             'value'       => isset( $item->currency ) ? $item->currency : '',
         ) ); ?>
     </li>
-</ol>
+</ul>

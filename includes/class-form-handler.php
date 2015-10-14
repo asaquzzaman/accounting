@@ -14,6 +14,7 @@ class Form_Handler {
      */
     public function __construct() {
         add_action( 'admin_init', array( $this, 'handle_customer_form' ) );
+        add_action( 'admin_init', array( $this, 'chart_form' ) );
     }
 
     /**
@@ -110,6 +111,75 @@ class Form_Handler {
             $message      = 'update';
 
             $insert_id    = erp_ac_insert_customer( $fields );
+        }
+
+        if ( is_wp_error( $insert_id ) ) {
+            $redirect_to = add_query_arg( array( 'msg' => 'error' ), $page_url );
+        } else {
+            $redirect_to = add_query_arg( array( 'msg' => $message ), $page_url );
+        }
+
+        wp_safe_redirect( $redirect_to );
+        exit;
+    }
+
+    /**
+     * Handle the chart new and edit form
+     *
+     * @return void
+     */
+    public function chart_form() {
+        if ( ! isset( $_POST['submit_erp_ac_chart'] ) ) {
+            return;
+        }
+
+        if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'erp-ac-chart' ) ) {
+            die( __( 'Are you cheating?', 'erp-accounting' ) );
+        }
+
+        if ( ! current_user_can( 'read' ) ) {
+            wp_die( __( 'Permission Denied!', 'erp-accounting' ) );
+        }
+
+        $message  = 'new';
+        $errors   = array();
+        $page_url = admin_url( 'admin.php?page=erp-accounting-charts' );
+        $field_id = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
+
+        $name            = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '';
+        $account_type_id = isset( $_POST['account_type_id'] ) ? sanitize_text_field( $_POST['account_type_id'] ) : '';
+        $active          = isset( $_POST['active'] ) ? intval( $_POST['active'] ) : 1;
+
+        // some basic validation
+        if ( ! $name ) {
+            $errors[] = __( 'Error: Name is required', 'erp-accounting' );
+        }
+
+        // bail out if error found
+        if ( $errors ) {
+            $first_error = reset( $errors );
+            $redirect_to = add_query_arg( array( 'error' => $first_error ), $page_url );
+            wp_safe_redirect( $redirect_to );
+            exit;
+        }
+
+        $fields = array(
+            'name'            => $name,
+            'account_type_id' => $account_type_id,
+            'active'          => $active
+        );
+
+        // New or edit?
+        if ( ! $field_id ) {
+
+            $insert_id = erp_ac_insert_chart( $fields );
+
+        } else {
+
+            $fields['id'] = $field_id;
+            $message      = 'update';
+
+            $insert_id = erp_ac_insert_chart( $fields );
         }
 
         if ( is_wp_error( $insert_id ) ) {

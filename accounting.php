@@ -137,7 +137,9 @@ class WeDevs_ERP_Accounting {
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-customer-list-table.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-vendor-list-table.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-admin-menu.php';
-        require_once WPERP_ACCOUNTING_PATH . '/includes/customer-functions.php';
+
+        require_once WPERP_ACCOUNTING_PATH . '/includes/functions-customer.php';
+        require_once WPERP_ACCOUNTING_PATH . '/includes/functions-chart.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';
     }
 
