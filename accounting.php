@@ -85,6 +85,8 @@ class WeDevs_ERP_Accounting {
         // switch redirect
         add_filter( 'erp_switch_redirect_to', array( $this, 'module_switch_redirect' ), 10, 2 );
 
+        add_filter( 'erp_settings_pages', array( $this, 'add_settings_page' ) );
+
         // load the module
         // add_action( 'wp-erp-load-module_erp-accounting', array( $this, 'plugin_init' ) );
         $this->plugin_init();
@@ -136,9 +138,11 @@ class WeDevs_ERP_Accounting {
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-form-handler.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-customer-list-table.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-vendor-list-table.php';
+        require_once WPERP_ACCOUNTING_PATH . '/includes/class-expense-transaction-list-table.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/class-admin-menu.php';
 
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-customer.php';
+        require_once WPERP_ACCOUNTING_PATH . '/includes/functions-transaction.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-chart.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';
     }
@@ -167,7 +171,8 @@ class WeDevs_ERP_Accounting {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_style( 'wp-erp-acc-styles', WPERP_ACCOUNTING_ASSETS . '/css/accounting.css', false, date( 'Ymd' ) );
+        wp_enqueue_style( 'wp-erp-ac-styles', WPERP_ACCOUNTING_ASSETS . '/css/accounting.css', false, date( 'Ymd' ) );
+        wp_enqueue_script( 'wp-erp-ac-js', WPERP_ACCOUNTING_ASSETS . '/js/accounting.js', [ 'jquery' ], date( 'Ymd' ), true );
     }
 
     /**
@@ -201,6 +206,13 @@ class WeDevs_ERP_Accounting {
         );
 
         return $modules;
+    }
+
+    public function add_settings_page( $settings = [] ) {
+
+        $settings[] = include __DIR__ . '/includes/class-settings.php';
+
+        return $settings;
     }
 
 } // WeDevs_ERP_Accounting

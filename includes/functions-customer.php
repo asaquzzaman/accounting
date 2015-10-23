@@ -32,6 +32,24 @@ function erp_ac_get_all_customer( $args = array() ) {
 }
 
 /**
+ * Get users as array
+ *
+ * @param  array   $args
+ *
+ * @return array
+ */
+function erp_ac_get_all_customer_array( $args = [] ) {
+    $users = [];
+    $customers = erp_ac_get_all_customer( $args );
+
+    foreach ($customers as $user) {
+        $users[ $user->id ] = $user->first_name . ' ' . $user->last_name;
+    }
+
+    return $users;
+}
+
+/**
  * Fetch all customer from database
  *
  * @return array

@@ -17,119 +17,16 @@
 
     $charts     = [];
     $all_charts = erp_ac_get_all_chart( [ 'number' => 200 ]);
-    $edit_url   = admin_url( 'admin.php?page=erp-accounting-charts&action=edit&id=' );
 
     foreach ($all_charts as $chart) {
         $charts[ $chart->class_id ][] = $chart;
     }
+
+    // var_dump( $charts );
+    erp_ac_chart_print_table( __( 'Assets', 'erp-accounting' ), $charts['1'] );
+    erp_ac_chart_print_table( __( 'Liabilities', 'erp-accounting' ), $charts['2'] );
+    erp_ac_chart_print_table( __( 'Expenses', 'erp-accounting' ), $charts['3'] );
+    erp_ac_chart_print_table( __( 'Income', 'erp-accounting' ), $charts['4'] );
+    erp_ac_chart_print_table( __( 'Equity', 'erp-accounting' ), $charts['5'] );
     ?>
-
-    <div class="metabox-holder">
-        <div class="postbox-container">
-            <div class="meta-box-sortables">
-                <div class="postbox">
-                    <h3 class="hndle"><?php _e( 'Income', 'erp-accounting' ); ?></h3>
-
-                    <div class="inside">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><?php _e( 'Name', 'erp-accounting' ); ?></th>
-                                    <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach( $charts['4'] as $income ) { ?>
-                                <tr>
-                                    <td><a href="<?php echo $edit_url . $income->id; ?>"><?php echo esc_html( $income->name ); ?></a></td>
-                                    <td class="col-balance">0</td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="postbox">
-                    <h3 class="hndle"><?php _e( 'Expenses', 'erp-accounting' ); ?></h3>
-
-                    <div class="inside">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><?php _e( 'Name', 'erp-accounting' ); ?></th>
-                                    <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach( $charts['3'] as $expense ) { ?>
-                                <tr>
-                                    <td><a href="<?php echo $edit_url . $expense->id; ?>"><?php echo esc_html( $expense->name ); ?></a></td>
-                                    <td class="col-balance">0</td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="postbox-container">
-            <div class="meta-box-sortables">
-                <div class="postbox">
-                    <h3 class="hndle"><?php _e( 'Assets', 'erp-accounting' ); ?></h3>
-
-                    <div class="inside">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><?php _e( 'Name', 'erp-accounting' ); ?></th>
-                                    <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach( $charts['1'] as $asset ) { ?>
-                                <tr>
-                                    <td><a href="<?php echo $edit_url . $asset->id; ?>"><?php echo esc_html( $asset->name ); ?></a></td>
-                                    <td class="col-balance">0</td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="postbox">
-                    <h3 class="hndle"><?php _e( 'Liability', 'erp-accounting' ); ?></h3>
-
-                    <div class="inside">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><?php _e( 'Name', 'erp-accounting' ); ?></th>
-                                    <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach( $charts['2'] as $liability ) { ?>
-                                <tr>
-                                    <td><a href="<?php echo $edit_url . $liability->id; ?>"><?php echo esc_html( $liability->name ); ?></a></td>
-                                    <td class="col-balance">0</td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="postbox">
-                    <h3 class="hndle"><?php _e( 'Equity', 'erp-accounting' ); ?></h3>
-
-                    <div class="inside"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>

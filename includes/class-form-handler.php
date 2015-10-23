@@ -15,6 +15,7 @@ class Form_Handler {
     public function __construct() {
         add_action( 'admin_init', array( $this, 'handle_customer_form' ) );
         add_action( 'admin_init', array( $this, 'chart_form' ) );
+        add_action( 'admin_init', array( $this, 'transaction_form' ) );
     }
 
     /**
@@ -186,6 +187,114 @@ class Form_Handler {
             $redirect_to = add_query_arg( array( 'msg' => 'error' ), $page_url );
         } else {
             $redirect_to = add_query_arg( array( 'msg' => $message ), $page_url );
+        }
+
+        wp_safe_redirect( $redirect_to );
+        exit;
+    }
+
+    /**
+     * Handle the transaction new and edit form
+     *
+     * @return void
+     */
+    public function transaction_form() {
+        if ( ! isset( $_POST['submit_erp_ac_trans'] ) ) {
+            return;
+        }
+
+        if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'erp-ac-trans-new' ) ) {
+            die( __( 'Are you cheating?', 'erp-accounting' ) );
+        }
+
+        if ( ! current_user_can( 'read' ) ) {
+            wp_die( __( 'Permission Denied!', 'erp-accounting' ) );
+        }
+
+        $errors          = array();
+        $page_url        = admin_url( 'admin.php?page=erp-accounting-expense' );
+        $field_id        = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
+
+        $type            = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+        $form_type       = isset( $_POST['form_type'] ) ? sanitize_text_field( $_POST['form_type'] ) : '';
+        $account_id      = isset( $_POST['account_id'] ) ? intval( $_POST['account_id'] ) : 0;
+        $status          = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
+        $user_id         = isset( $_POST['user_id'] ) ? sanitize_text_field( $_POST['user_id'] ) : '';
+        $billing_address = isset( $_POST['billing_address'] ) ? sanitize_text_field( $_POST['billing_address'] ) : '';
+        $ref             = isset( $_POST['ref'] ) ? sanitize_text_field( $_POST['ref'] ) : '';
+        $issue_date      = isset( $_POST['issue_date'] ) ? sanitize_text_field( $_POST['issue_date'] ) : '';
+        $summary         = isset( $_POST['summary'] ) ? wp_kses_post( $_POST['summary'] ) : '';
+        $total           = isset( $_POST['price_total'] ) ? sanitize_text_field( $_POST['price_total'] ) : '';
+        $files           = isset( $_POST['files'] ) ? sanitize_text_field( $_POST['files'] ) : '';
+        $currency        = isset( $_POST['currency'] ) ? sanitize_text_field( $_POST['currency'] ) : 'USD';
+
+        // var_dump( $_POST ); die();
+
+        // some basic validation
+        if ( ! $issue_date ) {
+            $errors[] = __( 'Error: Issue Date is required', 'erp-accounting' );
+        }
+
+        if ( ! $account_id ) {
+            $errors[] = __( 'Error: Account ID is required', 'erp-accounting' );
+        }
+
+        if ( ! $total ) {
+            $errors[] = __( 'Error: Total is required', 'erp-accounting' );
+        }
+
+        // bail out if error found
+        if ( $errors ) {
+            $first_error = reset( $errors );
+            $redirect_to = add_query_arg( array( 'error' => $first_error ), $page_url );
+            wp_safe_redirect( $redirect_to );
+            exit;
+        }
+
+        $fields = [
+            'type'            => $type,
+            'form_type'       => $form_type,
+            'account_id'      => $account_id,
+            'status'          => $status,
+            'user_id'         => $user_id,
+            'billing_address' => $billing_address,
+            'ref'             => $ref,
+            'issue_date'      => $issue_date,
+            'summary'         => $summary,
+            'total'           => $total,
+            'files'           => $files,
+            'currency'        => $currency,
+        ];
+
+        $items = [];
+        foreach ($_POST['line_account'] as $key => $acc_id) {
+            $line_total = (float) $_POST['line_total'][ $key ];
+
+            if ( ! $acc_id || ! $line_total ) {
+                continue;
+            }
+
+            $items[] = [
+                'account_id'  => (int) $acc_id,
+                'description' => sanitize_text_field( $_POST['line_desc'][ $key ] ),
+                'qty'         => intval( $_POST['line_qty'][ $key ] ),
+                'unit_price'  => floatval( $_POST['line_unit_price'][ $key ] ),
+                'discount'    => floatval( $_POST['line_discount'][ $key ] ),
+                'line_total'  => $line_total,
+            ];
+        }
+
+        // var_dump( $fields, $items ); die();
+
+        // New or edit?
+        if ( ! $field_id ) {
+            $insert_id = erp_ac_insert_transaction( $fields, $items );
+        }
+
+        if ( is_wp_error( $insert_id ) ) {
+            $redirect_to = add_query_arg( array( 'msg' => $insert_id->get_error_message() ), $page_url );
+        } else {
+            $redirect_to = add_query_arg( array( 'msg' => 'success' ), $page_url );
         }
 
         wp_safe_redirect( $redirect_to );

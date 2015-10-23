@@ -8,6 +8,15 @@
             <div class="postbox-container">
                 <div class="meta-box-sortables">
                     <div class="postbox">
+                        <h3 class="hndle"><span>Trial Balance</span></h3>
+                        <div class="inside">
+                            <p>Shows money you earned (income) and money you spent (expenses) so you can see how profitable you are. Also called an income statement.</p>
+
+                            <p><a class="button button-primary" href="<?php echo admin_url( 'admin.php?page=erp-accounting-reports&type=trial-balance' ); ?>">View Report</a></p>
+                        </div>
+                    </div><!-- .postbox -->
+
+                    <div class="postbox">
                         <h3 class="hndle"><span>Profit and Loss</span></h3>
                         <div class="inside">
                             <p>Shows money you earned (income) and money you spent (expenses) so you can see how profitable you are. Also called an income statement.</p>
