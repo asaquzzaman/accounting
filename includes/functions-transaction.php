@@ -23,7 +23,15 @@ function erp_ac_get_all_transaction( $args = array() ) {
     $items     = wp_cache_get( $cache_key, 'erp-accounting' );
 
     if ( false === $items ) {
-        $items = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->prefix . 'erp_ac_transactions ORDER BY ' . $args['orderby'] .' ' . $args['order'] .' LIMIT ' . $args['offset'] . ', ' . $args['number'] );
+        $transaction = new WeDevs\ERP\Accounting\Model\Transaction();
+        $items = $transaction->skip( $args['offset'] )
+                ->take( $args['number'] )
+                ->type( $args['type'] )
+                ->orderBy( $args['orderby'], $args['order'] )
+                ->get()
+                ->toArray();
+
+        $items = erp_array_to_object( $items );
 
         wp_cache_set( $cache_key, $items, 'erp-accounting' );
     }
@@ -37,9 +45,14 @@ function erp_ac_get_all_transaction( $args = array() ) {
  * @return array
  */
 function erp_ac_get_transaction_count( $type = 'expense' ) {
-    global $wpdb;
+    $cache_key = 'erp-ac-' . $type . '-count';
+    $count     = wp_cache_get( $cache_key, 'erp-accounting' );
 
-    return (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'erp_ac_transactions' );
+    if ( false === $count ) {
+        $count = WeDevs\ERP\Accounting\Model\Transaction::type( $type )->count();
+    }
+
+    return (int) $count;
 }
 
 /**
@@ -50,9 +63,14 @@ function erp_ac_get_transaction_count( $type = 'expense' ) {
  * @return array
  */
 function erp_ac_get_transaction( $id = 0 ) {
-    global $wpdb;
+    $cache_key   = 'erp-ac-transaction' . $id;
+    $transaction = wp_cache_get( $cache_key, 'erp-accounting' );
 
-    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'erp_ac_journal_details WHERE id = %d', $id ) );
+    if ( false === $count ) {
+        $transaction = WeDevs\ERP\Accounting\Model\Transaction::find( $id );
+    }
+
+    return erp_array_to_object( $transaction );
 }
 
 /**
@@ -129,6 +147,7 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
         // create the main journal entry
         $main_journal = $trans->journals()->create([
             'ledger_id'        => $main_account_id,
+            'type'             => 'main',
             $form_type['type'] => $args['total']
         ]);
 
@@ -142,6 +161,7 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
         foreach ($items as $item) {
             $journal = $trans->journals()->create([
                 'ledger_id'      => $item['account_id'],
+                'type'           => 'line_item',
                 $item_entry_type => $item['line_total']
             ]);
 

@@ -28,12 +28,14 @@
 
                     <li class="cols erp-form-field">
                         <?php
-                        erp_html_form_label( __( 'From Account', 'erp-accounting' ), 'account_id', true );
-                        echo erp_ac_get_chart_dropdown([
-                            'name'     => 'account_id',
-                            'exclude'  => [2, 3, 4, 5],
-                            'required' => true
-                        ]);
+                        erp_html_form_input( array(
+                            'label'       => __( 'From Account', 'erp-accounting' ),
+                            'name'        => 'account_id',
+                            'placeholder' => __( 'Select an Account', 'erp-accounting' ),
+                            'type'        => 'select',
+                            'class'       => 'select2',
+                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_bank_dropdown()
+                        ) );
                         ?>
 
                         <span class="balance-wrap">
@@ -73,7 +75,7 @@
 
         </ul>
 
-        <table class="widefat erp-ac-transaction-table" style="margin: 20px 0;">
+        <table class="widefat erp-ac-transaction-table payment-voucher-table" style="margin: 20px 0;">
             <thead>
                 <tr>
                     <th class="col-ac"><?php _e( 'Account', '$domain' ); ?></th>

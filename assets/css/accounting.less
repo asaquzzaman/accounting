@@ -206,6 +206,7 @@ table.erp-ac-transaction-table {
 
         a {
             color: #ccc;
+            text-decoration: none;
 
             &.move-row {
                 cursor: move;
@@ -247,5 +248,37 @@ table.vendor-list-table {
         font-size: 13px;
         line-height: 17px;
         margin-bottom: 10px;
+    }
+}
+
+.bank-accounts {
+    margin-top: 15px;
+
+    .bank-account {
+        h3 {
+            margin: 10px 0;
+            padding: 0 10px 5px 10px;
+
+            .pull-right {
+                float: right;
+            }
+        }
+    }
+}
+
+.erp-ac-journal-entry {
+    table.journal-table {
+        thead th {
+            border-bottom: 1px solid #E8E8E8;
+            margin-bottom: 10px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        th.invalid {
+            color: red;
+        }
     }
 }

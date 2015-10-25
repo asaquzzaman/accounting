@@ -29,6 +29,7 @@ class Admin_Menu {
         add_submenu_page( 'erp-accounting', __( 'Chart of Accounts', 'wp-erp' ), __( 'Chart of Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-charts', array( $this, 'page_chart_of_accounting' ) );
         // add_submenu_page( 'erp-accounting', __( 'Sales Tax', 'wp-erp' ), __( 'Sales Tax', 'wp-erp' ), 'manage_options', 'erp-accounting-tax', array( $this, 'page_tax' ) );
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'page_bank' ) );
+        add_submenu_page( 'erp-accounting', __( 'Journal Entry', 'wp-erp' ), __( 'Journal Entry', 'wp-erp' ), 'manage_options', 'erp-accounting-journal', array( $this, 'page_journal_entry' ) );
         add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
     }
 
@@ -115,6 +116,24 @@ class Admin_Menu {
 
             default:
                 $template = dirname( __FILE__ ) . '/views/reports.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+
+    public function page_journal_entry() {
+        $action   = isset( $_GET['action'] ) ? $_GET['action'] : '';
+
+        switch ( $action ) {
+            case 'new':
+                $template = dirname( __FILE__ ) . '/views/journal/new.php';
+                break;
+
+            default:
+                $template = dirname( __FILE__ ) . '/views/journal/list.php';
                 break;
         }
 

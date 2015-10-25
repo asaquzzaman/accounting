@@ -5,7 +5,19 @@ use WeDevs\ERP\Framework\Model;
 
 class Ledger extends Model {
     protected $primaryKey = 'id';
-    protected $table = 'erp_ac_ledger';
-    public $timestamps = false;
-    protected $fillable = [ 'code', 'name' ];
+    protected $table      = 'erp_ac_ledger';
+    public $timestamps    = false;
+    protected $fillable   = [ 'code', 'name' ];
+
+    public function scopeBank( $query ) {
+        return $query->where( 'cash_account', '=', 1 );
+    }
+
+    public function scopeActive( $query ) {
+        return $query->where( 'active', 1 );
+    }
+
+    public function bank_details() {
+        return $this->hasOne( 'WeDevs\ERP\Accounting\Model\Bank', 'ledger_id', 'id' );
+    }
 }

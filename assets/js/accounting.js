@@ -1,69 +1,151 @@
-jQuery(function($) {
+(function($) {
 
-    $( 'table.erp-ac-transaction-table' ).on('click', '.add-line', function(event) {
-        event.preventDefault();
+    var ERP_Accounting = {
 
-        var self = $(this),
-            table = self.closest( 'table' );
+        initialize: function() {
+            $( 'table.erp-ac-transaction-table' ).on('click', '.add-line', this.table.addRow );
+            $( 'table.erp-ac-transaction-table' ).on('click', '.remove-line', this.table.removeRow );
 
-        // destroy the last select2 for proper cloning
-        table.find('tbody > tr:last').find('select').select2('destroy');
+            // payment voucher
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on('click', '.remove-line', this.paymentVoucher.onChange );
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on('change', 'input.line_qty, input.line_price, input.line_dis', this.paymentVoucher.onChange );
 
-        var tr = table.find('tbody > tr:last'),
-            clone = tr.clone();
+            // journal entry
+            $( 'table.erp-ac-transaction-table.journal-table' ).on('click', '.remove-line', this.journal.onChange );
+            $( 'table.erp-ac-transaction-table.journal-table' ).on('change', 'input.line_debit, input.line_credit', this.journal.onChange );
+        },
 
-        clone.find('input').val('');
+        /**
+         * Table related general functions
+         *
+         * @type {Object}
+         */
+        table: {
+            removeRow: function(e) {
+                if ( typeof e !== 'undefined' ) {
+                    e.preventDefault();
+                }
 
-        tr.after( clone );
+                var self = $(this),
+                    table = self.closest( 'table' );
 
-        // re-initialize selec2
-        $('.select2').select2({
-            'theme': 'classic'
-        });
-    });
+                if ( table.find('tbody > tr').length < 2 ) {
+                    return;
+                }
 
-    $( 'table.erp-ac-transaction-table' ).on('click', '.remove-line', function(event) {
-        event.preventDefault();
+                self.closest('tr').remove();
+            },
 
-        var self = $(this),
-            table = self.closest( 'table' );
+            addRow: function(e) {
+                e.preventDefault();
 
-        if ( table.find('tbody > tr').length < 2 ) {
-            return;
-        }
+                var self = $(this),
+                    table = self.closest( 'table' );
 
-        self.closest('tr').remove();
-        calculateTablePrice();
-    });
+                // destroy the last select2 for proper cloning
+                table.find('tbody > tr:last').find('select').select2('destroy');
 
-    function calculateTablePrice() {
-        var table = $('table.erp-ac-transaction-table');
-        var total = 0.00;
+                var tr = table.find('tbody > tr:last'),
+                    clone = tr.clone();
 
-        table.find('tbody > tr').each(function(index, el) {
-            var row = $(el);
-            var qty        = parseInt( row.find('input.line_qty').val() ) || 1;
-            var line_price = parseFloat( row.find('input.line_price').val() ) || 0;
-            var discount   = parseFloat( row.find('input.line_dis').val() ) || 0;
+                clone.find('input').val('');
 
-            var price = qty * line_price;
+                tr.after( clone );
 
-            if ( discount > 0 ) {
-                price -= ( price * discount ) / 100;
+                // re-initialize selec2
+                $('.select2').select2({
+                    'theme': 'classic'
+                });
             }
+        },
 
-            total += price;
-            row.find('input.line_total').val( price );
-            row.find('input.line_total_disp').val( price.toFixed(2) );
+        /**
+         * Payment voucher
+         *
+         * @type {Object}
+         */
+        paymentVoucher: {
 
-            // console.log(qty, line_price, discount);
-        });
+            calculate: function() {
+                var table = $('table.payment-voucher-table');
+                var total = 0.00;
 
-        table.find('tfoot input.price-total').val( total.toFixed(2) );
-    }
+                table.find('tbody > tr').each(function(index, el) {
+                    var row = $(el);
+                    var qty        = parseInt( row.find('input.line_qty').val() ) || 1;
+                    var line_price = parseFloat( row.find('input.line_price').val() ) || 0;
+                    var discount   = parseFloat( row.find('input.line_dis').val() ) || 0;
 
-    $( 'table.erp-ac-transaction-table' ).on('change', 'input.line_qty, input.line_price, input.line_dis', function(event) {
-        calculateTablePrice();
+                    var price = qty * line_price;
+
+                    if ( discount > 0 ) {
+                        price -= ( price * discount ) / 100;
+                    }
+
+                    total += price;
+                    row.find('input.line_total').val( price );
+                    row.find('input.line_total_disp').val( price.toFixed(2) );
+
+                    // console.log(qty, line_price, discount);
+                });
+
+                table.find('tfoot input.price-total').val( total.toFixed(2) );
+            },
+
+            onChange: function() {
+                ERP_Accounting.paymentVoucher.calculate();
+            },
+        },
+
+        /**
+         * Journal entry
+         *
+         * @type {Object}
+         */
+        journal: {
+            calculate: function() {
+                var table = $('table.journal-table');
+                var debit_total = credit_total = 0.00;
+
+                table.find('tbody > tr').each(function(index, el) {
+                    var row    = $(el);
+                    var debit  = parseFloat( row.find('input.line_debit').val() ) || 0;
+                    var credit = parseFloat( row.find('input.line_credit').val() ) || 0;
+
+                    // both are filled
+                    if ( debit && credit ) {
+                        debit = 0;
+                        row.find('input.line_debit').val('0.00');
+                    }
+
+                    debit_total += debit;
+                    credit_total += credit;
+                });
+
+                var diff = debit_total - credit_total;
+
+                table.find('tfoot input.debit-price-total').val( debit_total.toFixed(2) );
+                table.find('tfoot input.credit-price-total').val( credit_total.toFixed(2) );
+
+                if ( diff !== 0 ) {
+                    table.find('th.col-diff').addClass('invalid').text( diff.toFixed(2) );
+                    $( '#submit_erp_ac_journal' ).attr('disabled', 'disabled');
+
+                } else {
+                    table.find('th.col-diff').removeClass('invalid').text( diff.toFixed(2) );
+                    $( '#submit_erp_ac_journal' ).removeAttr('disabled');
+                }
+
+            },
+
+            onChange: function() {
+                ERP_Accounting.journal.calculate();
+            }
+        }
+    };
+
+    $(function() {
+        ERP_Accounting.initialize();
     });
 
-});
+})(jQuery);

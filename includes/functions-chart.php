@@ -190,6 +190,23 @@ function erp_ac_get_charts() {
     return $raw;
 }
 
+function erp_ac_get_bank_accounts() {
+    return WeDevs\ERP\Accounting\Model\Ledger::bank()->active()->get()->toArray();
+}
+
+function erp_ac_get_bank_dropdown() {
+    $accounts = [];
+    $banks    = erp_ac_get_bank_accounts();
+
+    if ( $banks ) {
+        foreach ($banks as $bank) {
+            $accounts[ $bank['id'] ] = sprintf( '%s - %s', $bank['code'], $bank['name'] );
+        }
+    }
+
+    return $accounts;
+}
+
 function erp_ac_get_chart_dropdown( $args = [] ) {
     $account_charts = [];
     $defaults       = [
