@@ -131,6 +131,9 @@ class Transaction_List_Table extends \WP_List_Table {
 
         if ( ! $item->user_id ) {
             $user_display_name = __( '(no vendor)', 'erp-accounting' );
+        } else {
+            $transaction = \WeDevs\ERP\Accounting\Model\Transaction::find( $item->id );
+            $user_display_name = $transaction->user->first_name . ' ' . $transaction->user->last_name;
         }
 
         return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', $url, $user_display_name, $this->row_actions( $actions ) );

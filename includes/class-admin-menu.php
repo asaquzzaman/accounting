@@ -38,7 +38,35 @@ class Admin_Menu {
     }
 
     public function page_sales() {
-        include dirname( __FILE__ ) . '/views/sales.php';
+        $action   = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $type     = isset( $_GET['type'] ) ? $_GET['type'] : 'pv';
+        $id       = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+        $template = '';
+
+        switch ($action) {
+            case 'new':
+
+                if ( $type == 'invoice' ) {
+                    $template = dirname( __FILE__ ) . '/views/sales/invoice-new.php';
+                } elseif ( $type == 'payment' ) {
+                    $template = dirname( __FILE__ ) . '/views/sales/payment-new.php';
+                }
+
+                break;
+
+            case 'view':
+                $transaction = Model\Transaction::find( $id );
+                $template    = dirname( __FILE__ ) . '/views/sales/single.php';
+                break;
+
+            default:
+                $template = dirname( __FILE__ ) . '/views/sales/transaction-list.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 
     public function page_expenses() {

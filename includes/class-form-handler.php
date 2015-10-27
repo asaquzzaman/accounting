@@ -15,7 +15,9 @@ class Form_Handler {
     public function __construct() {
         add_action( 'admin_init', array( $this, 'handle_customer_form' ) );
         add_action( 'admin_init', array( $this, 'chart_form' ) );
-        add_action( 'admin_init', array( $this, 'transaction_form' ) );
+        add_action( 'erp_action_ac-new-payment-voucher', array( $this, 'transaction_form' ) );
+        add_action( 'erp_action_ac-new-invoice', array( $this, 'transaction_form' ) );
+        add_action( 'erp_action_ac-new-sales-payment', array( $this, 'transaction_form' ) );
         add_action( 'erp_action_ac-new-journal-entry', array( $this, 'journal_entry' ) );
     }
 
@@ -200,9 +202,6 @@ class Form_Handler {
      * @return void
      */
     public function transaction_form() {
-        if ( ! isset( $_POST['submit_erp_ac_trans'] ) ) {
-            return;
-        }
 
         if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'erp-ac-trans-new' ) ) {
             die( __( 'Are you cheating?', 'erp-accounting' ) );
@@ -213,23 +212,25 @@ class Form_Handler {
         }
 
         $errors          = array();
-        $page_url        = admin_url( 'admin.php?page=erp-accounting-expense' );
         $field_id        = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
 
+        $page            = isset( $_POST['page'] ) ? sanitize_text_field( $_POST['page'] ) : '';
         $type            = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
         $form_type       = isset( $_POST['form_type'] ) ? sanitize_text_field( $_POST['form_type'] ) : '';
         $account_id      = isset( $_POST['account_id'] ) ? intval( $_POST['account_id'] ) : 0;
         $status          = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
-        $user_id         = isset( $_POST['user_id'] ) ? sanitize_text_field( $_POST['user_id'] ) : '';
+        $user_id         = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : 0;
         $billing_address = isset( $_POST['billing_address'] ) ? sanitize_text_field( $_POST['billing_address'] ) : '';
         $ref             = isset( $_POST['ref'] ) ? sanitize_text_field( $_POST['ref'] ) : '';
         $issue_date      = isset( $_POST['issue_date'] ) ? sanitize_text_field( $_POST['issue_date'] ) : '';
+        $due_date        = isset( $_POST['due_date'] ) ? sanitize_text_field( $_POST['due_date'] ) : '';
         $summary         = isset( $_POST['summary'] ) ? wp_kses_post( $_POST['summary'] ) : '';
         $total           = isset( $_POST['price_total'] ) ? sanitize_text_field( $_POST['price_total'] ) : '';
         $files           = isset( $_POST['files'] ) ? sanitize_text_field( $_POST['files'] ) : '';
         $currency        = isset( $_POST['currency'] ) ? sanitize_text_field( $_POST['currency'] ) : 'USD';
 
         // var_dump( $_POST ); die();
+        $page_url        = admin_url( 'admin.php?page=' . $page );
 
         // some basic validation
         if ( ! $issue_date ) {

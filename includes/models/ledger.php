@@ -17,6 +17,10 @@ class Ledger extends Model {
         return $query->where( 'active', 1 );
     }
 
+    public function scopeCode( $query, $code = '' ) {
+        return $query->where( 'code', $code );
+    }
+
     public function bank_details() {
         return $this->hasOne( 'WeDevs\ERP\Accounting\Model\Bank', 'ledger_id', 'id' );
     }

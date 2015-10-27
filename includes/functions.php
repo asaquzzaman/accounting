@@ -15,7 +15,18 @@ function erp_ac_get_expense_form_types() {
 
 function erp_ac_get_sales_form_types() {
     $form_types = [
-
+        'payment' => [
+            'name'        => 'payment',
+            'label'       => __( 'Payment', 'erp-accounting' ),
+            'description' => __( '', 'erp-accounting' ),
+            'type'        => 'credit'
+        ],
+        'invoice' => [
+            'name'        => 'invoice',
+            'label'       => __( 'Invoice', 'erp-accounting' ),
+            'description' => __( '', 'erp-accounting' ),
+            'type'        => 'debit'
+        ],
     ];
 
     return apply_filters( 'erp_ac_get_sales_form_types', $form_types );

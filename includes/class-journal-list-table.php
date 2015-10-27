@@ -27,6 +27,7 @@ class Journal_List_Table extends Transaction_List_Table {
             'cb'         => '<input type="checkbox" />',
             'ref'        => __( 'Ref', 'erp-accounting' ),
             'issue_date' => __( 'Date', 'erp-accounting' ),
+            'summary'    => __( 'Summary', 'erp-accounting' ),
             'total'      => __( 'Total', 'erp-accounting' ),
         );
 

@@ -17,6 +17,10 @@ class Transaction extends Model {
         return $this->hasMany( 'WeDevs\ERP\Accounting\Model\Journal', 'transaction_id' );
     }
 
+    public function user() {
+        return $this->hasOne( 'WeDevs\ERP\Accounting\Model\User', 'id', 'user_id' );
+    }
+
     public function scopeType( $query, $type = 'expense' ) {
         return $query->where( 'type', '=', $type );
     }
