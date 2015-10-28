@@ -4,7 +4,7 @@
     <?php
     $accounts_receivable_id = WeDevs\ERP\Accounting\Model\Ledger::code('120')->first()->id;
     $dropdown = erp_ac_get_chart_dropdown([
-        'exclude'  => [1, 2, 3, 5],
+        'exclude'  => [1, 2, 3],
         'required' => true,
         'name'     => 'line_account[]'
     ] ); ?>

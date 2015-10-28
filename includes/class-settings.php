@@ -10,7 +10,6 @@ class Settings extends \ERP_Settings_Page {
     function __construct() {
         $this->id       = 'accounting';
         $this->label    = __( 'Accounting', 'erp' );
-        $this->sections = $this->get_sections();
     }
 
     /**
@@ -18,15 +17,15 @@ class Settings extends \ERP_Settings_Page {
      *
      * @return array
      */
-    public function get_section_fields( $section = '' ) {
+    public function get_settings() {
 
-        $fields['general'] = array(
+        $fields = array(
 
-            array( 'title' => __( 'General Options', 'erp-accounting' ), 'type' => 'title', 'desc' => '', 'id' => 'general_options' ),
+            array( 'title' => __( 'Accounting Settings', 'erp-accounting' ), 'type' => 'title', 'desc' => '', 'id' => 'general_options' ),
 
             array(
                 'title'   => __( 'Home Currency', 'erp-accounting' ),
-                'id'      => 'erp_ac_base_currency',
+                'id'      => 'base_currency',
                 'desc'    => __( 'The base currency of the system.', 'erp-accounting' ),
                 'type'    => 'select',
                 'options' => erp_get_currencies()
@@ -37,23 +36,7 @@ class Settings extends \ERP_Settings_Page {
         ); // End general settings
 
 
-        $section = ( $section === false ) ? $fields['general'] : $fields[$section];
-
-        return $section;
-    }
-
-    /**
-     * Get sections
-     *
-     * @return array
-     */
-    public function get_sections() {
-
-        $sections = array(
-            'general' => __( 'General Settings', 'erp' ),
-        );
-
-        return apply_filters( 'erp_get_sections_' . $this->id, $sections );
+        return apply_filters( 'erp_ac_settings_general', $fields );
     }
 }
 

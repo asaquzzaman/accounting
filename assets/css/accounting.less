@@ -137,34 +137,21 @@
 .erp-accounting {
 
     &.chart-of-accounts {
-        h2 {
-            margin-left: 8px;
-        }
 
-        .postbox-container {
-            width: 49.5%;
-
-            .meta-box-sortables {
-                margin: 0 8px;
-                min-height: 100px;
+        table.ac-chart-table {
+            td.col-code,
+            th.col-code {
+                width: 5%;
             }
 
-            h3.hndle a {
-                float: right;
-                text-decoration: none;
-                background-color: #0073AA;
-                color: #fff;
-                padding: 1px 7px;
-                border-radius: 2px;
+            td.col-name,
+            th.col-name {
+                width: 45%;
             }
 
-            table.table {
-                width: 100%;
-                text-align: left;
-
-                .col-balance {
-                    text-align: right;
-                }
+            td.col-type,
+            th.col-type {
+                width: 25%;
             }
         }
     }

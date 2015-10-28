@@ -12,13 +12,13 @@
         ?>
     </h2>
 
-    <form method="post">
-        <input type="hidden" name="page" value="ttest_list_table">
+    <form method="get">
+        <input type="hidden" name="page" value="erp-accounting-sales">
 
         <?php
         $list_table = new WeDevs\ERP\Accounting\Sales_Transaction_List_Table();
         $list_table->prepare_items();
-        // $list_table->search_box( 'search', 'search_id' );
+        $list_table->views();
         $list_table->display();
         ?>
     </form>

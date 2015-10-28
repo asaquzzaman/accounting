@@ -5,7 +5,7 @@
 
         <?php $item = erp_ac_get_chart( $id ); ?>
 
-        <?php include dirname( __FILE__ ) . '/fields.php'; ?>
+        <?php include dirname( __FILE__ ) . '/form-fields.php'; ?>
 
         <?php wp_nonce_field( 'erp-ac-chart' ); ?>
         <?php submit_button( __( 'Update Account', 'erp-accounting' ), 'primary', 'submit_erp_ac_chart' ); ?>

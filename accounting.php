@@ -82,14 +82,8 @@ class WeDevs_ERP_Accounting {
         // register the module
         add_filter( 'erp_get_modules', array( $this, 'register_module' ) );
 
-        // switch redirect
-        add_filter( 'erp_switch_redirect_to', array( $this, 'module_switch_redirect' ), 10, 2 );
-
-        add_filter( 'erp_settings_pages', array( $this, 'add_settings_page' ) );
-
         // load the module
-        // add_action( 'wp-erp-load-module_erp-accounting', array( $this, 'plugin_init' ) );
-        $this->plugin_init();
+        add_action( 'erp_loaded', array( $this, 'plugin_init' ) );
     }
 
     /**
@@ -147,9 +141,18 @@ class WeDevs_ERP_Accounting {
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';
     }
 
+    /**
+     * Initialize the classes
+     *
+     * @return void
+     */
     public function init_classes() {
         new WeDevs\ERP\Accounting\Admin_Menu();
         new WeDevs\ERP\Accounting\Form_Handler();
+
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+        }
+            new WeDevs\ERP\Accounting\Ajax_Handler();
     }
 
     /**
@@ -162,33 +165,24 @@ class WeDevs_ERP_Accounting {
     }
 
     /**
-     * Init the plugin actions
+     * Init the plugin filters
      *
      * @return void
      */
     public function init_filters() {
-
+        add_filter( 'erp_settings_pages', array( $this, 'add_settings_page' ) );
     }
 
     public function enqueue_scripts() {
+        // styles
         wp_enqueue_style( 'wp-erp-ac-styles', WPERP_ACCOUNTING_ASSETS . '/css/accounting.css', false, date( 'Ymd' ) );
-        wp_enqueue_script( 'wp-erp-ac-js', WPERP_ACCOUNTING_ASSETS . '/js/accounting.js', [ 'jquery' ], date( 'Ymd' ), true );
-    }
 
-    /**
-     * Redirect to the accounting dashboard page when switching from admin menu bar
-     *
-     * @param  string  redirect url
-     * @param  string  new mode slug
-     *
-     * @return string  new url to redirect to
-     */
-    function module_switch_redirect( $url, $new_mode ) {
-        if ( 'accounting' == $new_mode ) {
-            return admin_url( 'admin.php?page=erp-accounting' );
-        }
-
-        return $url;
+        // scripts
+        wp_enqueue_script( 'accounting', WPERP_ACCOUNTING_ASSETS . '/js/accounting.min.js', [ 'jquery' ], date( 'Ymd' ), true );
+        wp_enqueue_script( 'wp-erp-ac-js', WPERP_ACCOUNTING_ASSETS . '/js/erp-accounting.js', [ 'jquery' ], date( 'Ymd' ), true );
+        wp_localize_script( 'wp-erp-ac-js', 'ERP_AC', [
+            'nonce' => wp_create_nonce( 'erp-ac-nonce' )
+        ] );
     }
 
     /**

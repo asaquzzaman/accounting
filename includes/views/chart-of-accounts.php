@@ -22,7 +22,6 @@
         $charts[ $chart->class_id ][] = $chart;
     }
 
-    // var_dump( $charts );
     erp_ac_chart_print_table( __( 'Assets', 'erp-accounting' ), $charts['1'] );
     erp_ac_chart_print_table( __( 'Liabilities', 'erp-accounting' ), $charts['2'] );
     erp_ac_chart_print_table( __( 'Expenses', 'erp-accounting' ), $charts['3'] );

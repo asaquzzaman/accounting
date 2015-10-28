@@ -73,10 +73,10 @@ class Transaction_List_Table extends \WP_List_Table {
     function get_columns() {
         $columns = array(
             'cb'         => '<input type="checkbox" />',
-            'user_id'    => __( 'From', 'erp-accounting' ),
-            'form_type'  => __( 'Type', 'erp-accounting' ),
-            'ref'        => __( 'Ref', 'erp-accounting' ),
             'issue_date' => __( 'Date', 'erp-accounting' ),
+            'form_type'  => __( 'Type', 'erp-accounting' ),
+            'user_id'    => __( 'Vendor', 'erp-accounting' ),
+            'ref'        => __( 'Ref', 'erp-accounting' ),
             'total'      => __( 'Total', 'erp-accounting' ),
             'status'     => __( 'Status', 'erp-accounting' ),
         );
@@ -91,7 +91,7 @@ class Transaction_List_Table extends \WP_List_Table {
      */
     function get_sortable_columns() {
         $sortable_columns = array(
-            'name' => array( 'name', true ),
+            'issue_date' => array( 'issue_date', true ),
         );
 
         return $sortable_columns;
@@ -126,7 +126,7 @@ class Transaction_List_Table extends \WP_List_Table {
         $url               = admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id );
         $user_display_name = '';
         $actions           = array();
-        $actions['view']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id ), $item->id, __( 'View this transaction', 'erp-accounting' ), __( 'View', 'erp-accounting' ) );
+        // $actions['view']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id ), $item->id, __( 'View this transaction', 'erp-accounting' ), __( 'View', 'erp-accounting' ) );
         // $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=delete&id=' . $item->id ), $item->id, __( 'Delete this item', 'erp-accounting' ), __( 'Delete', 'erp-accounting' ) );
 
         if ( ! $item->user_id ) {
@@ -136,7 +136,7 @@ class Transaction_List_Table extends \WP_List_Table {
             $user_display_name = $transaction->user->first_name . ' ' . $transaction->user->last_name;
         }
 
-        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', $url, $user_display_name, $this->row_actions( $actions ) );
+        return sprintf( '<a href="%1$s">%2$s</a> %3$s', $url, $user_display_name, $this->row_actions( $actions ) );
     }
 
     public function column_form_type( $item ) {
@@ -175,6 +175,72 @@ class Transaction_List_Table extends \WP_List_Table {
         return $status_links;
     }
 
+    public function get_form_types() {
+        return [];
+    }
+
+    /**
+     * Filters
+     *
+     * @param  string  $which
+     *
+     * @return void
+     */
+    public function extra_tablenav( $which ) {
+        if ( 'top' == $which ) {
+            echo '<div class="alignleft actions">';
+
+            $start_date = '';
+            $end_date   = '';
+
+            if ( isset( $_REQUEST['start_date'] ) && !empty( $_REQUEST['start_date'] ) ) {
+                $start_date = $_REQUEST['start_date'];
+            }
+
+            if ( isset( $_REQUEST['end_date'] ) && !empty( $_REQUEST['end_date'] ) ) {
+                $end_date = $_REQUEST['end_date'];
+            }
+
+            $all_types = $this->get_form_types();
+            $types = [];
+
+            foreach ($all_types as $key => $type) {
+                $types[ $key ] = $type['label'];
+            }
+
+            erp_html_form_input([
+                'name'    => 'form_type',
+                'type'    => 'select',
+                'options' => [ '' => __( 'All Types', 'erp-accounting' ) ] + $types
+            ]);
+
+            erp_html_form_input([
+                'name'        => 'user_id',
+                'type'        => 'hidden',
+                'class'       => 'erp-ac-customer-search',
+                'placeholder' => __( 'Search for Customer', 'erp-accounting' ),
+            ]);
+
+            erp_html_form_input([
+                'name'        => 'start_date',
+                'class'       => 'erp-date-field',
+                'value'       => $start_date,
+                'placeholder' => __( 'Start Date', 'erp-accounting' )
+            ]);
+
+            erp_html_form_input([
+                'name'        => 'end_date',
+                'class'       => 'erp-date-field',
+                'value'       => $end_date,
+                'placeholder' => __( 'End Date', 'erp-accounting' )
+            ]);
+
+            submit_button( __( 'Filter' ), 'button', 'submit_filter_sales', false );
+
+            echo '</div>';
+        }
+    }
+
     /**
      * Prepare the class items
      *
@@ -202,6 +268,15 @@ class Transaction_List_Table extends \WP_List_Table {
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
             $args['orderby'] = $_REQUEST['orderby'];
             $args['order']   = $_REQUEST['order'] ;
+        }
+
+        // search params
+        if ( isset( $_REQUEST['start_date'] ) && !empty( $_REQUEST['start_date'] ) ) {
+            $args['start_date'] = $_REQUEST['start_date'];
+        }
+
+        if ( isset( $_REQUEST['end_date'] ) && !empty( $_REQUEST['end_date'] ) ) {
+            $args['end_date'] = $_REQUEST['end_date'];
         }
 
         $this->items  = erp_ac_get_all_transaction( $args );

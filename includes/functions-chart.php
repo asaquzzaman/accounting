@@ -86,10 +86,12 @@ function erp_ac_insert_chart( $args = array() ) {
     global $wpdb;
 
     $defaults = array(
-        'id'              => null,
-        'name'            => '',
-        'account_type_id' => '',
-        'active'          => 1,
+        'id'      => null,
+        'name'    => '',
+        'type_id' => '',
+        'active'  => 1,
+        'parent'  => 0,
+        'system'  => 0
     );
 
     $args       = wp_parse_args( $args, $defaults );
@@ -106,15 +108,16 @@ function erp_ac_insert_chart( $args = array() ) {
 
     if ( ! $row_id ) {
 
-        // insert a new
-        if ( $wpdb->insert( $table_name, $args ) ) {
-            return $wpdb->insert_id;
+        $ledger = WeDevs\ERP\Accounting\Model\Ledger::create( $args );
+
+        if ( $ledger->id ) {
+            return $ledger->id;
         }
 
     } else {
 
         // don't allow to change account type
-        unset( $args['account_type_id'] );
+        unset( $args['type_id'] );
 
         // do update method here
         if ( $wpdb->update( $table_name, $args, array( 'id' => $row_id ) ) ) {

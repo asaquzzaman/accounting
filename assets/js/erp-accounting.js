@@ -3,16 +3,19 @@
     var ERP_Accounting = {
 
         initialize: function() {
-            $( 'table.erp-ac-transaction-table' ).on('click', '.add-line', this.table.addRow );
-            $( 'table.erp-ac-transaction-table' ).on('click', '.remove-line', this.table.removeRow );
+            $( 'table.erp-ac-transaction-table' ).on( 'click', '.add-line', this.table.addRow );
+            $( 'table.erp-ac-transaction-table' ).on( 'click', '.remove-line', this.table.removeRow );
 
             // payment voucher
-            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on('click', '.remove-line', this.paymentVoucher.onChange );
-            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on('change', 'input.line_qty, input.line_price, input.line_dis', this.paymentVoucher.onChange );
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'click', '.remove-line', this.paymentVoucher.onChange );
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'change', 'input.line_qty, input.line_price, input.line_dis', this.paymentVoucher.onChange );
 
             // journal entry
-            $( 'table.erp-ac-transaction-table.journal-table' ).on('click', '.remove-line', this.journal.onChange );
-            $( 'table.erp-ac-transaction-table.journal-table' ).on('change', 'input.line_debit, input.line_credit', this.journal.onChange );
+            $( 'table.erp-ac-transaction-table.journal-table' ).on( 'click', '.remove-line', this.journal.onChange );
+            $( 'table.erp-ac-transaction-table.journal-table' ).on( 'change', 'input.line_debit, input.line_credit', this.journal.onChange );
+
+            // chart of accounts
+            $( 'form#erp-ac-accounts-form').on( 'change', 'input#code', this.accounts.checkCode );
         },
 
         /**
@@ -141,11 +144,57 @@
             onChange: function() {
                 ERP_Accounting.journal.calculate();
             }
+        },
+
+        /**
+         * Chart of accounts
+         *
+         * @type {Object}
+         */
+        accounts: {
+
+            checkCode: function() {
+                var self = $(this);
+                var li = self.closest('li');
+
+                wp.ajax.send( {
+                    data: {
+                        action: 'erp_ac_ledger_check_code',
+                        '_wpnonce': ERP_AC.nonce,
+                        code: self.val()
+                    },
+                    success: function(res) {
+                        li.removeClass('invalid');
+                    },
+                    error: function(error) {
+                        li.addClass('invalid');
+                        alert( 'This code already exists, please try another.' );
+                    }
+                });
+            }
         }
     };
 
     $(function() {
         ERP_Accounting.initialize();
+
+        $( 'select.erp-ac-customer-search' ).select2({
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                cache: true,
+                url: ajaxurl,
+                dataType: 'json',
+                quietMillis: 250,
+                data: function( term ) {
+                    return {
+                        term: term,
+                        action: 'erp_ac_customer_search',
+                        _wpnonce: ''
+                    };
+                },
+            }
+        });
     });
 
 })(jQuery);

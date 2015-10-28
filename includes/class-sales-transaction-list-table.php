@@ -37,6 +37,15 @@ class Sales_Transaction_List_Table extends Transaction_List_Table {
         return $columns;
     }
 
+    /**
+     * Get form types
+     *
+     * @return array
+     */
+    public function get_form_types() {
+        return erp_ac_get_sales_form_types();
+    }
+
     public function column_form_type( $item ) {
         $types = erp_ac_get_sales_form_types();
 

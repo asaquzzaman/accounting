@@ -152,11 +152,18 @@ class Form_Handler {
 
         $name            = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '';
         $account_type_id = isset( $_POST['account_type_id'] ) ? sanitize_text_field( $_POST['account_type_id'] ) : '';
+        $code            = isset( $_POST['code'] ) ? intval( $_POST['code'] ) : '';
+        $description     = isset( $_POST['description'] ) ? sanitize_text_field( $_POST['description'] ) : 1;
         $active          = isset( $_POST['active'] ) ? intval( $_POST['active'] ) : 1;
 
         // some basic validation
+
+        if ( Model\Ledger::code( $code )->get()->first() !== null ) {
+            $errors[] = __( 'Error: The account code is already exists.', 'erp-accounting' );
+        }
+
         if ( ! $name ) {
-            $errors[] = __( 'Error: Name is required', 'erp-accounting' );
+            $errors[] = __( 'Error: Name is required.', 'erp-accounting' );
         }
 
         // bail out if error found
@@ -168,15 +175,31 @@ class Form_Handler {
         }
 
         $fields = array(
-            'name'            => $name,
-            'account_type_id' => $account_type_id,
-            'active'          => $active
+            'code'    => $code,
+            'name'    => $name,
+            'type_id' => $account_type_id,
+            'active'  => $active
         );
+
+        // bank account
+        if ( $account_type_id == 6 ) {
+            $fields['cash_account'] = 1;
+            $fields['reconcile']    = 1;
+        }
 
         // New or edit?
         if ( ! $field_id ) {
 
             $insert_id = erp_ac_insert_chart( $fields );
+
+            if ( $insert_id && $account_type_id == 6 ) {
+
+                $ledger = Model\Ledger::find( $insert_id );
+                $ledger->bank_details()->create([
+                    'account_number' => sanitize_text_field( $_POST['bank']['account_number'] ),
+                    'bank_name'      => sanitize_text_field( $_POST['bank']['bank_name'] )
+                ]);
+            }
 
         } else {
 

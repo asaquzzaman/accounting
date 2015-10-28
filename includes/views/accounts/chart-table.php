@@ -2,14 +2,14 @@
 
     <h3><?php echo $title; ?></h3>
 
-    <table class="table widefat striped">
+    <table class="table widefat striped ac-chart-table">
         <thead>
             <tr>
-                <th><?php _e( 'Code', 'erp-accounting' ); ?></th>
-                <th><?php _e( 'Name', 'erp-accounting' ); ?></th>
-                <th><?php _e( 'Type', 'erp-accounting' ); ?></th>
+                <th class="col-code"><?php _e( 'Code', 'erp-accounting' ); ?></th>
+                <th class="col-name"><?php _e( 'Name', 'erp-accounting' ); ?></th>
+                <th class="col-type"><?php _e( 'Type', 'erp-accounting' ); ?></th>
                 <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
-                <th><?php _e( 'Actions', 'erp-accounting' ); ?></th>
+                <th class="col-action"><?php _e( 'Actions', 'erp-accounting' ); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -18,11 +18,11 @@
                 foreach( $charts as $chart ) {
                     ?>
                     <tr>
-                        <td><?php echo $chart->code; ?></td>
-                        <td><?php echo esc_html( $chart->name ); ?></td>
-                        <td><?php echo $chart->type_name; ?></td>
+                        <td class="col-code"><?php echo $chart->code; ?></td>
+                        <td class="col-name"><?php echo esc_html( $chart->name ); ?></td>
+                        <td class="col-type"><?php echo $chart->type_name; ?></td>
                         <td class="col-balance">0</td>
-                        <td>
+                        <td class="col-action">
                             <?php if ( $chart->system ) {
                                 _e( 'System Account', 'erp-accounting' );
                             } else {

@@ -116,30 +116,17 @@
   width: 66%;
   float: left;
 }
-.erp-accounting.chart-of-accounts h2 {
-  margin-left: 8px;
+.erp-accounting.chart-of-accounts table.ac-chart-table td.col-code,
+.erp-accounting.chart-of-accounts table.ac-chart-table th.col-code {
+  width: 5%;
 }
-.erp-accounting.chart-of-accounts .postbox-container {
-  width: 49.5%;
+.erp-accounting.chart-of-accounts table.ac-chart-table td.col-name,
+.erp-accounting.chart-of-accounts table.ac-chart-table th.col-name {
+  width: 45%;
 }
-.erp-accounting.chart-of-accounts .postbox-container .meta-box-sortables {
-  margin: 0 8px;
-  min-height: 100px;
-}
-.erp-accounting.chart-of-accounts .postbox-container h3.hndle a {
-  float: right;
-  text-decoration: none;
-  background-color: #0073AA;
-  color: #fff;
-  padding: 1px 7px;
-  border-radius: 2px;
-}
-.erp-accounting.chart-of-accounts .postbox-container table.table {
-  width: 100%;
-  text-align: left;
-}
-.erp-accounting.chart-of-accounts .postbox-container table.table .col-balance {
-  text-align: right;
+.erp-accounting.chart-of-accounts table.ac-chart-table td.col-type,
+.erp-accounting.chart-of-accounts table.ac-chart-table th.col-type {
+  width: 25%;
 }
 table.erp-ac-transaction-table {
   width: 100%;

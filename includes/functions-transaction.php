@@ -14,8 +14,8 @@ function erp_ac_get_all_transaction( $args = array() ) {
         'type'    => 'expense',
         'number'  => 20,
         'offset'  => 0,
-        'orderby' => 'id',
-        'order'   => 'ASC',
+        'orderby' => 'issue_date',
+        'order'   => 'DESC',
     );
 
     $args      = wp_parse_args( $args, $defaults );
@@ -24,6 +24,15 @@ function erp_ac_get_all_transaction( $args = array() ) {
 
     if ( false === $items ) {
         $transaction = new WeDevs\ERP\Accounting\Model\Transaction();
+
+        if ( isset( $args['start_date'] ) && ! empty( $args['start_date'] ) ) {
+            $transaction = $transaction->where( 'issue_date', '>=', $args['start_date'] );
+        }
+
+        if ( isset( $args['end_date'] ) && ! empty( $args['end_date'] ) ) {
+            $transaction = $transaction->where( 'issue_date', '<=', $args['end_date'] );
+        }
+
         $items = $transaction->skip( $args['offset'] )
                 ->take( $args['number'] )
                 ->type( $args['type'] )
