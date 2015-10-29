@@ -39,8 +39,11 @@ function erp_ac_get_all_chart( $args = [] ) {
     $items     = wp_cache_get( $cache_key, 'erp-accounting' );
 
     if ( false === $items ) {
-        $sql = "SELECT ch.*, ct.class_id, ct.name as type_name FROM {$wpdb->prefix}erp_ac_ledger AS ch
+        $sql = "SELECT ch.*, ct.class_id, ct.name as type_name, count(jour.ledger_id) as entries
+            FROM {$wpdb->prefix}erp_ac_ledger AS ch
             LEFT JOIN {$wpdb->prefix}erp_ac_chart_types AS ct ON ct.id = ch.type_id
+            LEFT JOIN {$wpdb->prefix}erp_ac_journals as jour ON jour.ledger_id = ch.id
+            GROUP BY ch.id
             ORDER BY {$args['orderby']} {$args['order']}
             LIMIT {$args['offset']}, {$args['number']}";
 

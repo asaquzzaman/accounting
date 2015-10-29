@@ -12,4 +12,12 @@ class Journal extends Model {
     public function ledger() {
         return $this->hasOne( 'WeDevs\ERP\Accounting\Model\Ledger', 'id', 'ledger_id' );
     }
+
+    public function transaction() {
+        return $this->hasOne( 'WeDevs\ERP\Accounting\Model\Transaction', 'id', 'transaction_id' );
+    }
+
+    public function scopeofLedger( $query, $ledger_id = '' ) {
+        return $query->where( 'ledger_id', $ledger_id );
+    }
 }

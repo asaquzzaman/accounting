@@ -207,3 +207,62 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
 
     return false;
 }
+
+
+/**
+ * Get transactions for a ledger
+ *
+ * @param  int  $ledger_id
+ * @param  array   $args
+ *
+ * @return array
+ */
+function erp_ac_get_ledger_transactions( $ledger_id, $args = [] ) {
+    global $wpdb;
+
+    $defaults = [
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'issue_date',
+        'order'   => 'DESC',
+    ];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $cache_key = 'erp-ac-ledger-transactions-' . md5( serialize( $args ) );
+    $items     = wp_cache_get( $cache_key, 'erp-accounting' );
+
+    if ( false === $items ) {
+        $where = sprintf( 'WHERE jour.ledger_id = %d', absint( $ledger_id ) );
+        $limit = ( $args['number'] == '-1' ) ? '' : sprintf( 'LIMIT %d, %d', $args['offset'], $args['number'] );
+
+        if ( isset( $args['start_date'] ) && !empty( $args['start_date'] ) ) {
+            $where .= " AND trans.issue_date >= '{$args['start_date']}' ";
+        }
+
+        if ( isset( $args['end_date'] ) && !empty( $args['end_date'] ) ) {
+            $where .= " AND trans.issue_date <= '{$args['end_date']}' ";
+        }
+
+        if ( isset( $args['type'] ) && !empty( $args['type'] ) ) {
+            $where .= " AND trans.type = '{$args['type']}' ";
+        }
+
+        if ( isset( $args['form_type'] ) && !empty( $args['form_type'] ) ) {
+            $where .= " AND trans.form_type = '{$args['form_type']}' ";
+        }
+
+        $sql = "SELECT * FROM {$wpdb->prefix}erp_ac_journals as jour
+            LEFT JOIN {$wpdb->prefix}erp_ac_transactions as trans ON trans.id = jour.transaction_id
+            $where
+            ORDER BY {$args['orderby']} {$args['order']}
+            $limit";
+
+        $items = $wpdb->get_results( $sql );
+        wp_cache_set( $cache_key, $items, 'erp-accounting' );
+    }
+
+    return $items;
+}
+
+

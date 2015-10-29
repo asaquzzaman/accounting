@@ -8,20 +8,27 @@
                 <th class="col-code"><?php _e( 'Code', 'erp-accounting' ); ?></th>
                 <th class="col-name"><?php _e( 'Name', 'erp-accounting' ); ?></th>
                 <th class="col-type"><?php _e( 'Type', 'erp-accounting' ); ?></th>
-                <th class="col-balance"><?php _e( 'Balance', 'erp-accounting' ); ?></th>
+                <th class="col-transactions"><?php _e( 'Entries', 'erp-accounting' ); ?></th>
                 <th class="col-action"><?php _e( 'Actions', 'erp-accounting' ); ?></th>
             </tr>
         </thead>
         <tbody>
             <?php
             if ( $charts ) {
+
+                $chart_details = admin_url( 'admin.php?page=erp-accounting-charts&action=view&id=' );
+
                 foreach( $charts as $chart ) {
                     ?>
                     <tr>
                         <td class="col-code"><?php echo $chart->code; ?></td>
-                        <td class="col-name"><?php echo esc_html( $chart->name ); ?></td>
+                        <td class="col-name">
+                            <a href="<?php echo $chart_details . $chart->id; ?>"><?php echo esc_html( $chart->name ); ?></a>
+                        </td>
                         <td class="col-type"><?php echo $chart->type_name; ?></td>
-                        <td class="col-balance">0</td>
+                        <td class="col-transactions">
+                            <a href="<?php echo $chart_details . $chart->id; ?>"><?php echo intval( $chart->entries ); ?></a>
+                        </td>
                         <td class="col-action">
                             <?php if ( $chart->system ) {
                                 _e( 'System Account', 'erp-accounting' );

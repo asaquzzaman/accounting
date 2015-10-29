@@ -27,7 +27,6 @@ class Admin_Menu {
         add_submenu_page( 'erp-accounting', __( 'Sales', 'wp-erp' ), __( 'Sales', 'wp-erp' ), 'manage_options', 'erp-accounting-sales', array( $this, 'page_sales' ) );
         add_submenu_page( 'erp-accounting', __( 'Expenses', 'wp-erp' ), __( 'Expenses', 'wp-erp' ), 'manage_options', 'erp-accounting-expense', array( $this, 'page_expenses' ) );
         add_submenu_page( 'erp-accounting', __( 'Chart of Accounts', 'wp-erp' ), __( 'Chart of Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-charts', array( $this, 'page_chart_of_accounting' ) );
-        // add_submenu_page( 'erp-accounting', __( 'Sales Tax', 'wp-erp' ), __( 'Sales Tax', 'wp-erp' ), 'manage_options', 'erp-accounting-tax', array( $this, 'page_tax' ) );
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'page_bank' ) );
         add_submenu_page( 'erp-accounting', __( 'Journal Entry', 'wp-erp' ), __( 'Journal Entry', 'wp-erp' ), 'manage_options', 'erp-accounting-journal', array( $this, 'page_journal_entry' ) );
         add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
@@ -104,6 +103,8 @@ class Admin_Menu {
 
         switch ($action) {
             case 'view':
+
+                $ledger = Model\Ledger::find( $id );
 
                 $template = dirname( __FILE__ ) . '/views/accounts/single.php';
                 break;
