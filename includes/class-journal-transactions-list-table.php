@@ -139,6 +139,8 @@ class Journal_Transactions extends \WP_List_Table {
 
             $start_date = '';
             $end_date   = '';
+            $type       = '';
+            $form_type  = '';
 
             if ( isset( $_REQUEST['start_date'] ) && !empty( $_REQUEST['start_date'] ) ) {
                 $start_date = $_REQUEST['start_date'];
@@ -147,6 +149,27 @@ class Journal_Transactions extends \WP_List_Table {
             if ( isset( $_REQUEST['end_date'] ) && !empty( $_REQUEST['end_date'] ) ) {
                 $end_date = $_REQUEST['end_date'];
             }
+
+            if ( isset( $_REQUEST['type'] ) && !empty( $_REQUEST['type'] ) ) {
+                $type = $_REQUEST['type'];
+            }
+
+            if ( isset( $_REQUEST['form_type'] ) && !empty( $_REQUEST['form_type'] ) ) {
+                $form_type = $_REQUEST['form_type'];
+            }
+
+            erp_html_form_input([
+                'name'        => 'type',
+                'value'       => $type,
+                'type'       => 'select',
+                'options' => [
+                    ''        => __( 'All Types', 'erp-accounting' ),
+                    'sales'   => __( 'Sales', 'erp-accounting' ),
+                    'expense' => __( 'Expense', 'erp-accounting' ),
+                    'journal' => __( 'Journal Entries', 'erp-accounting' )
+                ],
+                'placeholder' => __( 'Start Date', 'erp-accounting' )
+            ]);
 
             erp_html_form_input([
                 'name'        => 'start_date',
@@ -232,6 +255,14 @@ class Journal_Transactions extends \WP_List_Table {
 
         if ( isset( $_REQUEST['end_date'] ) && !empty( $_REQUEST['end_date'] ) ) {
             $args['end_date'] = $_REQUEST['end_date'];
+        }
+
+        if ( isset( $_REQUEST['type'] ) && !empty( $_REQUEST['type'] ) ) {
+            $args['type'] = $_REQUEST['type'];
+        }
+
+        if ( isset( $_REQUEST['form_type'] ) && !empty( $_REQUEST['form_type'] ) ) {
+            $args['form_type'] = $_REQUEST['form_type'];
         }
 
         $this->items  = erp_ac_get_ledger_transactions( $ledger_id, $args );
