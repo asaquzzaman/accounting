@@ -145,7 +145,6 @@ class WeDevs_ERP_Accounting {
      * @return void
      */
     private function includes() {
-        require_once WPERP_ACCOUNTING_PATH . '/includes/functions-customer.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-transaction.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-chart.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';

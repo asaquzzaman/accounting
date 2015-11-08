@@ -191,10 +191,10 @@ class Customer_List_Table extends \WP_List_Table {
             $args['order']   = $_REQUEST['order'] ;
         }
 
-        $this->items  = erp_ac_get_all_customer( $args );
+        $this->items  = erp_get_peoples( $args );
 
         $this->set_pagination_args( array(
-            'total_items' => erp_ac_get_customer_count( $this->type ),
+            'total_items' => erp_get_peoples_count( $this->type ),
             'per_page'    => $per_page
         ) );
     }

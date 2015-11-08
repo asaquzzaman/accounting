@@ -107,14 +107,14 @@ class Form_Handler {
         // New or edit?
         if ( ! $field_id ) {
 
-            $insert_id = erp_ac_insert_customer( $fields );
+            $insert_id = erp_insert_people( $fields );
 
         } else {
 
             $fields['id'] = $field_id;
             $message      = 'update';
 
-            $insert_id    = erp_ac_insert_customer( $fields );
+            $insert_id    = erp_insert_people( $fields );
         }
 
         if ( is_wp_error( $insert_id ) ) {
