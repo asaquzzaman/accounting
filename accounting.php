@@ -76,6 +76,9 @@ class WeDevs_ERP_Accounting {
      */
     public function __construct() {
 
+        // installation
+        register_activation_hook( __FILE__, array( $this, 'activate' ) );
+
         // Localize our plugin
         add_action( 'init', array( $this, 'localization_setup' ) );
 
@@ -84,6 +87,19 @@ class WeDevs_ERP_Accounting {
 
         // load the module
         add_action( 'erp_loaded', array( $this, 'plugin_init' ) );
+
+        // plugin not installed notice
+        add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+    }
+
+    /**
+     * Plugin activation
+     *
+     * @return void
+     */
+    public function activate() {
+        $installer = new WeDevs\ERP\Accounting\Install();
+        $installer->install();
     }
 
     /**
@@ -129,12 +145,6 @@ class WeDevs_ERP_Accounting {
      * @return void
      */
     private function includes() {
-        require_once WPERP_ACCOUNTING_PATH . '/includes/class-form-handler.php';
-        require_once WPERP_ACCOUNTING_PATH . '/includes/class-customer-list-table.php';
-        require_once WPERP_ACCOUNTING_PATH . '/includes/class-vendor-list-table.php';
-        require_once WPERP_ACCOUNTING_PATH . '/includes/class-expense-transaction-list-table.php';
-        require_once WPERP_ACCOUNTING_PATH . '/includes/class-admin-menu.php';
-
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-customer.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-transaction.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-chart.php';
@@ -151,8 +161,8 @@ class WeDevs_ERP_Accounting {
         new WeDevs\ERP\Accounting\Form_Handler();
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-        }
             new WeDevs\ERP\Accounting\Ajax_Handler();
+        }
     }
 
     /**
@@ -207,6 +217,19 @@ class WeDevs_ERP_Accounting {
         $settings[] = include __DIR__ . '/includes/class-settings.php';
 
         return $settings;
+    }
+
+    /**
+     * Give notice if ERP is not installed
+     *
+     * @return void
+     */
+    public function admin_notice() {
+        if ( ! function_exists( 'wperp' ) ) {
+            echo '<div class="message"><p>';
+            echo __( 'Error: WP ERP Plugin is required to use accounting plugin.', 'domain' );
+            echo '</p></div>';
+        }
     }
 
 } // WeDevs_ERP_Accounting
