@@ -23,7 +23,7 @@
                             'placeholder' => __( 'Select a payee', 'erp-accounting' ),
                             'type'        => 'select',
                             'class'       => 'select2',
-                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_all_customer_array( ['type' => 'customer', 'number' => 100 ] )
+                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_get_peoples_array( ['type' => 'customer', 'number' => 100 ] )
                         ) );
                         ?>
                     </li>

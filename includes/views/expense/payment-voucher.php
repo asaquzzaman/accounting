@@ -22,7 +22,7 @@
                             'name'        => 'user_id',
                             'type'        => 'select',
                             'class'       => 'select2',
-                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_all_customer_array( ['type' => 'vendor', 'number' => 100 ] ),
+                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_get_peoples_array( ['type' => 'vendor', 'number' => 100 ] ),
                             'custom_attr' => [
                                 'data-placeholder' => __( 'Select a payee', 'erp-accounting' )
                             ]
