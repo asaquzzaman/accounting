@@ -220,3 +220,45 @@ table.vendor-list-table th.column-customer img {
 .erp-ac-journal-entry table.journal-table th.invalid {
   color: red;
 }
+.invoice-preview-wrap {
+  padding: 20px;
+  background-color: #fff;
+  max-width: 800px;
+  margin-top: 50px;
+  border: 1px solid #e5e5e5;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.invoice-preview-wrap hr {
+  border-bottom: none;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+.invoice-preview-wrap .invoice-number {
+  float: right;
+  padding: 8px 20px;
+  background-color: #eee;
+  margin: -20px 0 20px 0;
+}
+.invoice-preview-wrap .table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.invoice-preview-wrap .table td,
+.invoice-preview-wrap .table th {
+  vertical-align: middle;
+  padding: 12px;
+}
+.invoice-preview-wrap .table td.product-name,
+.invoice-preview-wrap .table th.product-name {
+  width: 30%;
+}
+.invoice-preview-wrap .table.info-table th,
+.invoice-preview-wrap .table.info-table td {
+  padding: 4px;
+}
+.invoice-preview-wrap .company-logo img {
+  max-width: 120px;
+  height: auto;
+}

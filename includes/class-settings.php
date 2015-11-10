@@ -30,6 +30,20 @@ class Settings extends \ERP_Settings_Page {
                 'type'    => 'select',
                 'options' => erp_get_currencies()
             ),
+            array(
+                'title'   => __( 'Date Format', 'erp-accounting' ),
+                'id'      => 'date_format',
+                'desc'    => __( 'Format of date to show accross accounting system.', 'erp-accounting' ),
+                'tooltip' => true,
+                'type'    => 'select',
+                'options' => [
+                    'm-d-Y' => 'mm-dd-yyyy',
+                    'd-m-Y' => 'dd-mm-yyyy',
+                    'm/d/Y' => 'mm/dd/yyyy',
+                    'd/m/Y' => 'dd/mm/yyyy',
+                    'Y-m-d' => 'yyyy-mm-dd',
+                ]
+            ),
 
             array( 'type' => 'sectionend', 'id' => 'script_styling_options' ),
 

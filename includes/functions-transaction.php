@@ -25,6 +25,10 @@ function erp_ac_get_all_transaction( $args = array() ) {
     if ( false === $items ) {
         $transaction = new WeDevs\ERP\Accounting\Model\Transaction();
 
+        if ( isset( $args['user_id'] ) && ! empty( $args['user_id'] ) ) {
+            $transaction = $transaction->where( 'user_id', '=', $args['user_id'] );
+        }
+
         if ( isset( $args['start_date'] ) && ! empty( $args['start_date'] ) ) {
             $transaction = $transaction->where( 'issue_date', '>=', $args['start_date'] );
         }
@@ -53,12 +57,18 @@ function erp_ac_get_all_transaction( $args = array() ) {
  *
  * @return array
  */
-function erp_ac_get_transaction_count( $type = 'expense' ) {
-    $cache_key = 'erp-ac-' . $type . '-count';
+function erp_ac_get_transaction_count( $type = 'expense', $user_id = 0 ) {
+    $cache_key = 'erp-ac-' . $type . '-' . $user_id . '-count';
     $count     = wp_cache_get( $cache_key, 'erp-accounting' );
 
     if ( false === $count ) {
-        $count = WeDevs\ERP\Accounting\Model\Transaction::type( $type )->count();
+        $trans = new WeDevs\ERP\Accounting\Model\Transaction();
+
+        if ( $user_id ) {
+            $trans = $trans->where( 'user_id', '=', $user_id );
+        }
+
+        $count = $trans->type( $type )->count();
     }
 
     return (int) $count;

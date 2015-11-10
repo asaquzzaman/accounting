@@ -1,5 +1,5 @@
 <div class="wrap erp-ac-form-wrap">
-    <h2><?php _e( 'Payment Voucher', '$domain' ); ?></h2>
+    <h2><?php _e( 'Payment Voucher', 'erp-accounting' ); ?></h2>
 
     <?php
     $selected_account_id = isset( $_GET['account_id'] ) ? intval( $_GET['account_id'] ) : 0;
@@ -7,7 +7,8 @@
         'exclude'  => [1, 4, 5],
         'required' => true,
         'name'     => 'line_account[]'
-    ] ); ?>
+    ] );
+    ?>
 
     <form action="" method="post" class="erp-form" style="margin-top: 30px;">
 
@@ -85,6 +86,7 @@
 
         <input type="hidden" name="field_id" value="0">
         <input type="hidden" name="type" value="expense">
+        <input type="hidden" name="status" value="paid">
         <input type="hidden" name="form_type" value="payment_voucher">
         <input type="hidden" name="page" value="erp-accounting-expense">
         <input type="hidden" name="erp-action" value="ac-new-payment-voucher">

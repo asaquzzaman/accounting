@@ -55,7 +55,13 @@ class Admin_Menu {
 
             case 'view':
                 $transaction = Model\Transaction::find( $id );
-                $template    = dirname( __FILE__ ) . '/views/sales/single.php';
+
+                if ( $transaction->form_type == 'invoice' ) {
+                    $template = dirname( __FILE__ ) . '/views/sales/invoice-single.php';
+                } else {
+                    $template = dirname( __FILE__ ) . '/views/sales/single.php';
+                }
+
                 break;
 
             default:
@@ -69,15 +75,22 @@ class Admin_Menu {
     }
 
     public function page_expenses() {
-        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
-        $type   = isset( $_GET['type'] ) ? $_GET['type'] : 'pv';
-        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+        $action   = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $type     = isset( $_GET['type'] ) ? $_GET['type'] : 'pv';
+        $id       = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+        $template = '';
 
         switch ($action) {
             case 'new':
 
                 if ( $type == 'payment_voucher' ) {
+
                     $template = dirname( __FILE__ ) . '/views/expense/payment-voucher.php';
+
+                } elseif ( $type == 'vendor_credit' ) {
+
+                    $template = dirname( __FILE__ ) . '/views/expense/vendor-credit.php';
+
                 }
 
                 break;
@@ -182,7 +195,7 @@ class Admin_Menu {
 
         switch ($action) {
             case 'view':
-
+                $customer = new \WeDevs\ERP\People( $id );
                 $template = dirname( __FILE__ ) . '/views/customer/single.php';
                 break;
 

@@ -79,6 +79,7 @@
 
         <input type="hidden" name="field_id" value="0">
         <input type="hidden" name="account_id" value="<?php echo $accounts_receivable_id; ?>">
+        <input type="hidden" name="status" value="closed">
         <input type="hidden" name="type" value="sales">
         <input type="hidden" name="form_type" value="payment">
         <input type="hidden" name="page" value="erp-accounting-sales">

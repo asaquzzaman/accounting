@@ -62,7 +62,7 @@ class Customer_List_Table extends \WP_List_Table {
             case 'phone':
                 return $item->phone;
 
-            case 'open_balance':
+            case 'balance':
                 return '$0';
 
             default:
@@ -77,12 +77,12 @@ class Customer_List_Table extends \WP_List_Table {
      */
     function get_columns() {
         $columns = array(
-            'cb'           => '<input type="checkbox" />',
-            'customer'     => __( 'Customer', 'wp-erp-ac' ),
-            'company'      => __( 'Company', 'wp-erp-ac' ),
-            'email'        => __( 'Email', 'wp-erp-ac' ),
-            'phone'        => __( 'Phone', 'wp-erp-ac' ),
-            'open_balance' => __( 'Open Balance', 'wp-erp-ac' ),
+            'cb'       => '<input type="checkbox" />',
+            'customer' => __( 'Customer', 'wp-erp-ac' ),
+            'company'  => __( 'Company', 'wp-erp-ac' ),
+            'email'    => __( 'Email', 'wp-erp-ac' ),
+            'phone'    => __( 'Phone', 'wp-erp-ac' ),
+            'balance'  => __( 'Balance', 'wp-erp-ac' ),
         );
 
         return $columns;

@@ -241,7 +241,7 @@ class Form_Handler {
         $type            = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
         $form_type       = isset( $_POST['form_type'] ) ? sanitize_text_field( $_POST['form_type'] ) : '';
         $account_id      = isset( $_POST['account_id'] ) ? intval( $_POST['account_id'] ) : 0;
-        $status          = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
+        $status          = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : 'closed';
         $user_id         = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : 0;
         $billing_address = isset( $_POST['billing_address'] ) ? sanitize_text_field( $_POST['billing_address'] ) : '';
         $ref             = isset( $_POST['ref'] ) ? sanitize_text_field( $_POST['ref'] ) : '';
@@ -287,9 +287,15 @@ class Form_Handler {
             'issue_date'      => $issue_date,
             'summary'         => $summary,
             'total'           => $total,
+            'trans_total'     => $total,
             'files'           => $files,
             'currency'        => $currency,
         ];
+
+        // set invoice and vendor credit due to full amount
+        if ( in_array( $form_type, [ 'invoice', 'vendor_credit' ] ) ) {
+            $fields['due'] = $total;
+        }
 
         $items = [];
         foreach ($_POST['line_account'] as $key => $acc_id) {

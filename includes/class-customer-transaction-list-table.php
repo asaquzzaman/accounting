@@ -8,13 +8,14 @@ if ( ! class_exists ( 'WP_List_Table' ) ) {
 /**
  * List table class
  */
-class Sales_Transaction_List_Table extends Transaction_List_Table {
+class Customer_Transaction_List_Table extends Sales_Transaction_List_Table {
 
-    function __construct() {
+    private $customer_id;
+
+    function __construct( $customer_id = 0 ) {
         parent::__construct();
 
-        $this->type = 'sales';
-        $this->slug = 'erp-accounting-sales';
+        $this->customer_id = $customer_id;
     }
 
     /**
@@ -28,9 +29,7 @@ class Sales_Transaction_List_Table extends Transaction_List_Table {
             'issue_date' => __( 'Date', 'erp-accounting' ),
             'form_type'  => __( 'Type', 'erp-accounting' ),
             'ref'        => __( 'Ref', 'erp-accounting' ),
-            'user_id'    => __( 'Customer', 'erp-accounting' ),
             'due_date'   => __( 'Due Date', 'erp-accounting' ),
-            'due'        => __( 'Due', 'erp-accounting' ),
             'total'      => __( 'Total', 'erp-accounting' ),
             'status'     => __( 'Status', 'erp-accounting' ),
         );
@@ -39,19 +38,27 @@ class Sales_Transaction_List_Table extends Transaction_List_Table {
     }
 
     /**
-     * Get form types
+     * Get all transactions
+     *
+     * @param  array  $args
      *
      * @return array
      */
-    public function get_form_types() {
-        return erp_ac_get_sales_form_types();
+    protected function get_transactions( $args ) {
+        $args['user_id'] = $this->customer_id;
+
+        return erp_ac_get_all_transaction( $args );
     }
 
-    public function column_form_type( $item ) {
-        $types = erp_ac_get_sales_form_types();
-
-        if ( array_key_exists( $item->form_type, $types ) ) {
-            return sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id ), $types[ $item->form_type ]['label'] );
-        }
+    /**
+     * Get transaction count
+     *
+     * @param  array  $args
+     *
+     * @return int
+     */
+    protected function get_transaction_count( $args ) {
+        return erp_ac_get_transaction_count( $args['type'], $this->customer_id );
     }
+
 }

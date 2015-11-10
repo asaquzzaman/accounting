@@ -46,7 +46,7 @@ class Transaction_List_Table extends \WP_List_Table {
 
         switch ( $column_name ) {
             case 'issue_date':
-                return $item->issue_date;
+                return erp_ac_format_date( $item->issue_date );
 
             case 'form_type':
                 return $item->form_type;
@@ -54,14 +54,17 @@ class Transaction_List_Table extends \WP_List_Table {
             case 'user_id':
                 return $item->user_id;
 
+            case 'due':
+                return number_format_i18n( $item->due, 2 );
+
             case 'total':
                 return $item->total;
 
             case 'status':
-                return $item->status;
+                return erp_ac_get_status_label( $item->status );
 
             default:
-                return isset( $item->$column_name ) ? $item->$column_name : '';
+                return isset( $item->$column_name ) ? $item->$column_name : '&mdash;';
         }
     }
 
@@ -77,6 +80,7 @@ class Transaction_List_Table extends \WP_List_Table {
             'form_type'  => __( 'Type', 'erp-accounting' ),
             'user_id'    => __( 'Vendor', 'erp-accounting' ),
             'ref'        => __( 'Ref', 'erp-accounting' ),
+            'due'        => __( 'Due', 'erp-accounting' ),
             'total'      => __( 'Total', 'erp-accounting' ),
             'status'     => __( 'Status', 'erp-accounting' ),
         );
@@ -155,7 +159,7 @@ class Transaction_List_Table extends \WP_List_Table {
      * @return string
      */
     function column_issue_date( $item ) {
-        return sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id ), $item->issue_date );
+        return sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=' . $this->slug . '&action=view&id=' . $item->id ), erp_ac_format_date( $item->issue_date ) );
     }
 
     /**
@@ -242,6 +246,28 @@ class Transaction_List_Table extends \WP_List_Table {
     }
 
     /**
+     * Get all transactions
+     *
+     * @param  array  $args
+     *
+     * @return array
+     */
+    protected function get_transactions( $args ) {
+        return erp_ac_get_all_transaction( $args );
+    }
+
+    /**
+     * Get transaction count
+     *
+     * @param  array  $args
+     *
+     * @return int
+     */
+    protected function get_transaction_count( $args ) {
+        return erp_ac_get_transaction_count( $args['type'] );
+    }
+
+    /**
      * Prepare the class items
      *
      * @return void
@@ -279,10 +305,10 @@ class Transaction_List_Table extends \WP_List_Table {
             $args['end_date'] = $_REQUEST['end_date'];
         }
 
-        $this->items  = erp_ac_get_all_transaction( $args );
+        $this->items = $this->get_transactions( $args );
 
         $this->set_pagination_args( array(
-            'total_items' => erp_ac_get_transaction_count( $this->type ),
+            'total_items' => $this->get_transaction_count( $args ),
             'per_page'    => $per_page
         ) );
     }

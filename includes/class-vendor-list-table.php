@@ -39,12 +39,12 @@ class Vendor_List_Table extends Customer_List_Table {
      */
     function get_columns() {
         $columns = array(
-            'cb'           => '<input type="checkbox" />',
-            'customer'     => __( 'Vendor', 'wp-erp-ac' ),
-            'company'      => __( 'Company', 'wp-erp-ac' ),
-            'email'        => __( 'Email', 'wp-erp-ac' ),
-            'phone'        => __( 'Phone', 'wp-erp-ac' ),
-            'open_balance' => __( 'Open Balance', 'wp-erp-ac' ),
+            'cb'       => '<input type="checkbox" />',
+            'customer' => __( 'Vendor', 'wp-erp-ac' ),
+            'company'  => __( 'Company', 'wp-erp-ac' ),
+            'email'    => __( 'Email', 'wp-erp-ac' ),
+            'phone'    => __( 'Phone', 'wp-erp-ac' ),
+            'open'     => __( 'Balance', 'wp-erp-ac' ),
         );
 
         return $columns;
