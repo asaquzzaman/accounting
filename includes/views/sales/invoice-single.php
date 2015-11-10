@@ -1,7 +1,8 @@
 <?php
 $company = new \WeDevs\ERP\Company();
-
+$user    = new \WeDevs\ERP\People( intval( $transaction->user_id ) );
 // var_dump( $transaction->items->toArray() );
+// var_dump( $user );
 ?>
 <div class="wrap">
 
@@ -34,7 +35,8 @@ $company = new \WeDevs\ERP\Company();
             <div class="row">
                 <div class="col-3">
                     <div class="bill-to"><?php _e( 'Bill to:', 'erp-accounting' ); ?></div>
-                    <div class="billing-address"><?php echo wpautop( $transaction->billing_address, true ); ?></div>
+                    <strong><?php echo $user->get_full_name(); ?></strong>
+                    <div class="billing-address"><?php echo nl2br( $transaction->billing_address ); ?></div>
                 </div>
                 <div class="col-3 align-right">
                     <table class="table info-table">
