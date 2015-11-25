@@ -11,9 +11,16 @@ $user    = new \WeDevs\ERP\People( intval( $transaction->user_id ) );
     <div class="invoice-preview-wrap">
 
         <div class="erp-grid-container">
+            <div class="row invoice-buttons">
+                <div class="col-6">
+                    <a href="#" class="button button-primary button-large add-invoice-payment"><?php _e( 'Add Payment', 'erp-accounting' ); ?></a>
+                    <a href="#" class="button button-large"><?php _e( 'Edit Invoice', 'erp-accounting' ); ?></a>
+                    <a href="#" class="button button-large print-invoice"><?php _e( 'Print', 'erp-accounting' ); ?></a>
+                </div>
+            </div>
             <div class="row">
                 <div class="invoice-number">
-                    <?php printf( __( 'Invoice: <strong>%d</strong>', 'erp-accounting' ), 31 ); ?>
+                    <?php printf( __( 'Invoice: <strong>%d</strong>', 'erp-accounting' ), $transaction->id ); ?>
                 </div>
             </div>
 
@@ -106,7 +113,12 @@ $user    = new \WeDevs\ERP\People( intval( $transaction->user_id ) );
                             </tr>
                             <tr>
                                 <th><?php _e( 'Total Paid', 'erp-accounting' ); ?></th>
-                                <td>0.00</td>
+                                <td>
+                                    <?php
+                                    $total_paid = floatval( $transaction->total ) - floatval( $transaction->due );
+                                    echo number_format_i18n( $total_paid, 2 );
+                                    ?>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

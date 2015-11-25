@@ -48,6 +48,9 @@ class Transaction_List_Table extends \WP_List_Table {
             case 'issue_date':
                 return erp_ac_format_date( $item->issue_date );
 
+            case 'due_date':
+                return !empty( $item->due_date ) ? erp_ac_format_date( $item->due_date ) : '&mdash;';
+
             case 'form_type':
                 return $item->form_type;
 
@@ -64,7 +67,7 @@ class Transaction_List_Table extends \WP_List_Table {
                 return erp_ac_get_status_label( $item->status );
 
             default:
-                return isset( $item->$column_name ) ? $item->$column_name : '&mdash;';
+                return isset( $item->$column_name ) && !empty( $item->$column_name ) ? $item->$column_name : '&mdash;';
         }
     }
 

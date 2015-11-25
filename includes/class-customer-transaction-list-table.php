@@ -30,6 +30,7 @@ class Customer_Transaction_List_Table extends Sales_Transaction_List_Table {
             'form_type'  => __( 'Type', 'erp-accounting' ),
             'ref'        => __( 'Ref', 'erp-accounting' ),
             'due_date'   => __( 'Due Date', 'erp-accounting' ),
+            'due'        => __( 'Due', 'erp-accounting' ),
             'total'      => __( 'Total', 'erp-accounting' ),
             'status'     => __( 'Status', 'erp-accounting' ),
         );

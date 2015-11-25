@@ -2,7 +2,6 @@
     <h2><?php _e( 'Receive Payment', '$domain' ); ?></h2>
 
     <?php
-    $accounts_receivable_id = WeDevs\ERP\Accounting\Model\Ledger::code('120')->first()->id;
     $dropdown = erp_ac_get_chart_dropdown([
         'exclude'  => [1, 2, 3],
         'required' => true,
@@ -78,7 +77,6 @@
         <?php include dirname( dirname( __FILE__ ) ) . '/common/memo.php'; ?>
 
         <input type="hidden" name="field_id" value="0">
-        <input type="hidden" name="account_id" value="<?php echo $accounts_receivable_id; ?>">
         <input type="hidden" name="status" value="closed">
         <input type="hidden" name="type" value="sales">
         <input type="hidden" name="form_type" value="payment">

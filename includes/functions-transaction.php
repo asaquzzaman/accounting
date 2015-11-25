@@ -41,6 +41,7 @@ function erp_ac_get_all_transaction( $args = array() ) {
                 ->take( $args['number'] )
                 ->type( $args['type'] )
                 ->orderBy( $args['orderby'], $args['order'] )
+                ->orderBy( 'created_at', $args['order'] )
                 ->get()
                 ->toArray();
 

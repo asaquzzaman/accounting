@@ -243,7 +243,7 @@ class Form_Handler {
         $account_id      = isset( $_POST['account_id'] ) ? intval( $_POST['account_id'] ) : 0;
         $status          = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : 'closed';
         $user_id         = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : 0;
-        $billing_address = isset( $_POST['billing_address'] ) ? sanitize_text_field( $_POST['billing_address'] ) : '';
+        $billing_address = isset( $_POST['billing_address'] ) ? wp_kses_post( $_POST['billing_address'] ) : '';
         $ref             = isset( $_POST['ref'] ) ? sanitize_text_field( $_POST['ref'] ) : '';
         $issue_date      = isset( $_POST['issue_date'] ) ? sanitize_text_field( $_POST['issue_date'] ) : '';
         $due_date        = isset( $_POST['due_date'] ) ? sanitize_text_field( $_POST['due_date'] ) : '';
@@ -285,6 +285,7 @@ class Form_Handler {
             'billing_address' => $billing_address,
             'ref'             => $ref,
             'issue_date'      => $issue_date,
+            'due_date'        => $due_date,
             'summary'         => $summary,
             'total'           => $total,
             'trans_total'     => $total,
