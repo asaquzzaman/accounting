@@ -81,3 +81,23 @@ function erp_ac_get_status_label( $status ) {
 
     return apply_filters( 'erp_ac_status_labels', $label, $status );
 }
+
+function erp_ac_get_currency_symbole() {
+    $currencty = erp_get_option( 'base_currency', 'erp_settings_accounting', false );
+    
+    if ( $currencty ) {
+       return erp_get_currency_symbol( $currencty ); 
+    } else {
+        return '$';
+    }
+}
+
+function erp_ac_get_currency() {
+    $currency = erp_get_option( 'base_currency', 'erp_settings_accounting', false );
+    
+    if ( $currency ) {
+        return $currency; 
+    } else {
+        return 'AUD';
+    }
+}

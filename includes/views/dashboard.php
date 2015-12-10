@@ -1,3 +1,10 @@
+<?php 
+$open_invoice     = erp_ac_get_open_invoice();
+$overdue_income   = erp_ac_db_get_overdue_income();
+$currency_symbole = erp_ac_get_currency_symbole();
+$total_previous   = erp_ac_get_paid_within_month();           
+
+?>
 <div class="wrap erp-account-dashboard">
 
     <h2><?php _e( 'Accounting', 'erp-accounting' ); ?></h2>
@@ -14,7 +21,7 @@
                     <div class="open-area">
                         <div class="top-bar"></div>
                         <div class="bar-text">
-                            <div class="price">$0</div>
+                            <div class="price"><?php echo $currency_symbole; ?><?php echo $open_invoice; ?></div>
                             <div class="text">Open Invoices</div>
                         </div>
                     </div>
@@ -22,7 +29,7 @@
                     <div class="due-area">
                         <div class="top-bar"></div>
                         <div class="bar-text">
-                            <div class="price">$0</div>
+                            <div class="price"><?php echo $currency_symbole; ?><?php echo $overdue_income; ?></div>
                             <div class="text">Overdue</div>
                         </div>
                     </div>
@@ -31,7 +38,7 @@
                 <div class="paid-container">
                     <div class="top-bar"></div>
                     <div class="bar-text">
-                        <div class="price">$200</div>
+                        <div class="price"><?php echo $currency_symbole; ?><?php echo $total_previous; ?></div>
                         <div class="text">Paid last 30 days</div>
                     </div>
                 </div>
@@ -46,7 +53,7 @@
 
         <div class="module-content">
             <div class="expense-value">
-                <div class="price">$0</div>
+                <div class="price"><?php echo $currency_symbole; ?>0</div>
                 <div class="text">Last 30 days</div>
             </div>
 

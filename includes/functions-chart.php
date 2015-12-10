@@ -154,6 +154,28 @@ function erp_ac_get_all_chart_types() {
 }
 
 /**
+ * Get all chart types by class id
+ *
+ * @param int $class_id
+ *
+ * @return array
+ */
+function erp_ac_get_chart_types_by_class_id( $class_id ) {
+    global $wpdb;
+
+    $cache_key = 'erp-ac-chart-type-by-class-id';
+    $items     = wp_cache_get( $cache_key, 'erp-accounting' );
+
+    if ( false === $items ) {
+        $items = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->prefix . 'erp_ac_chart_types WHERE class_id = '. $class_id .' ORDER BY class_id ASC' );
+
+        wp_cache_set( $cache_key, $items, 'erp-accounting' );
+    }
+
+    return $items;
+}
+
+/**
  * Get chart type as array
  *
  * @return array

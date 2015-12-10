@@ -165,8 +165,9 @@ class Install {
 
         // check if ledger exists
         if ( ! $wpdb->get_var( "SELECT id FROM `{$wpdb->prefix}erp_ac_ledger` LIMIT 0, 1" ) ) {
-            $sql = "INSERT INTO `{$wpdb->prefix}erp_ac_ledger` (`id`, `name`, `class_id`)
-                    VALUES
+
+            $sql = "INSERT INTO `{$wpdb->prefix}erp_ac_ledger` (`id`, `code`, `name`, `description`, `parent`, `type_id`, `currency`, `tax`, `cash_account`, `reconcile`, `system`, `active`) 
+                        VALUES
                         (1,'120','Accounts Receivable',NULL,0,1,'',NULL,0,0,1,1),
                         (2,'140','Inventory',NULL,0,3,'',NULL,0,0,1,1),
                         (3,'150','Office Equipment',NULL,0,2,'',NULL,0,0,1,1),
@@ -227,7 +228,7 @@ class Install {
                         (58,'320','Retained Earnings',NULL,0,16,'',NULL,0,0,1,1),
                         (59,'330','Common Stock',NULL,0,16,'',NULL,0,0,0,1),
                         (60,'092','Savings Account',NULL,0,6,'',NULL,1,1,0,1);";
-
+            
             $wpdb->query( $sql );
         }
 

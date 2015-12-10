@@ -148,6 +148,7 @@ class WeDevs_ERP_Accounting {
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-transaction.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions-chart.php';
         require_once WPERP_ACCOUNTING_PATH . '/includes/functions.php';
+        require_once WPERP_ACCOUNTING_PATH . '/includes/function-dashboard.php';
     }
 
     /**
