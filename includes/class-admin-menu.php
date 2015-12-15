@@ -21,7 +21,7 @@ class Admin_Menu {
     public function admin_menu() {
         add_menu_page( __( 'Accounting', 'wp-erp' ), __( 'Accounting', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ), 'dashicons-chart-pie', null );
 
-        add_submenu_page( 'erp-accounting', __( 'Dashboard', 'wp-erp' ), __( 'Dashboard', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ) );
+        $dashboard = add_submenu_page( 'erp-accounting', __( 'Dashboard', 'wp-erp' ), __( 'Dashboard', 'wp-erp' ), 'manage_options', 'erp-accounting', array( $this, 'dashboard_page' ) );
         add_submenu_page( 'erp-accounting', __( 'Customers', 'wp-erp' ), __( 'Customers', 'wp-erp' ), 'manage_options', 'erp-accounting-customers', array( $this, 'page_customers' ) );
         add_submenu_page( 'erp-accounting', __( 'Vendors', 'wp-erp' ), __( 'Vendors', 'wp-erp' ), 'manage_options', 'erp-accounting-vendors', array( $this, 'page_vendors' ) );
         add_submenu_page( 'erp-accounting', __( 'Sales', 'wp-erp' ), __( 'Sales', 'wp-erp' ), 'manage_options', 'erp-accounting-sales', array( $this, 'page_sales' ) );
@@ -30,6 +30,15 @@ class Admin_Menu {
         add_submenu_page( 'erp-accounting', __( 'Bank Accounts', 'wp-erp' ), __( 'Bank Accounts', 'wp-erp' ), 'manage_options', 'erp-accounting-bank', array( $this, 'page_bank' ) );
         add_submenu_page( 'erp-accounting', __( 'Journal Entry', 'wp-erp' ), __( 'Journal Entry', 'wp-erp' ), 'manage_options', 'erp-accounting-journal', array( $this, 'page_journal_entry' ) );
         add_submenu_page( 'erp-accounting', __( 'Reports', 'wp-erp' ), __( 'Reports', 'wp-erp' ), 'manage_options', 'erp-accounting-reports', array( $this, 'page_reports' ) );
+
+        add_action( 'admin_print_styles-' . $dashboard, array( $this, 'dashboard_script' ) );
+    }
+
+    function dashboard_script() {
+        wp_enqueue_script( 'erp-flotchart' );
+        wp_enqueue_script( 'erp-flotchart-time' );
+        wp_enqueue_script( 'erp-flotchart-axislables' );
+        wp_enqueue_script( 'erp-flotchart-orerbars' );
     }
 
     public function dashboard_page() {
