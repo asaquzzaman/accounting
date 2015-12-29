@@ -136,7 +136,7 @@ $label  = json_encode( $label );
                         showTooltip(item.pageX,
                         item.pageY,
                         color,
-                        "<strong>" + item.series.label + "</strong><br>" + item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong> °C");
+                        "<strong>" + item.series.label + "</strong><br>" + item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong>");
                     }
                 } else {
                     jQuery("#tooltip").remove();
@@ -178,7 +178,7 @@ $label  = json_encode( $label );
                         <div class="top-bar"></div>
                         <div class="bar-text">
                             <div class="price"><?php echo $currency_symbole; ?><?php echo $open_invoice; ?></div>
-                            <div class="text">Open Invoices</div>
+                            <div class="text"><?php _e( 'Open Invoices (Not paid in full)', ''); ?></div>
                         </div>
                     </div>
 
@@ -186,7 +186,7 @@ $label  = json_encode( $label );
                         <div class="top-bar"></div>
                         <div class="bar-text">
                             <div class="price"><?php echo $currency_symbole; ?><?php echo $overdue_income; ?></div>
-                            <div class="text">Overdue</div>
+                            <div class="text"><?php _e( 'Overdue (Not paid in full and due date is passed)', '' ); ?></div>
                         </div>
                     </div>
                 </div>

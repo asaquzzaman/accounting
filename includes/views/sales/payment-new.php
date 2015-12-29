@@ -1,3 +1,8 @@
+<?php
+$account = isset( $_GET['receive_payment'] ) && $_GET['receive_payment'] == 'true' ? true : false;
+$account_id = $account && isset( $_GET['bank'] ) ? intval( $_GET['bank'] ) : false;
+$customer_class = $account_id ? 'erp-ac-payment-receive' : '';
+?>
 <div class="wrap erp-ac-form-wrap">
     <h2><?php _e( 'Receive Payment', '$domain' ); ?></h2>
 
@@ -21,7 +26,7 @@
                             'name'        => 'user_id',
                             'placeholder' => __( 'Select a payee', 'erp-accounting' ),
                             'type'        => 'select',
-                            'class'       => 'select2',
+                            'class'       => 'select2 erp-ac-payment-receive',
                             'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_get_peoples_array( ['type' => 'customer', 'number' => 100 ] )
                         ) );
                         ?>
@@ -57,15 +62,32 @@
 
                     <li class="cols erp-form-field">
                         <?php
-                        erp_html_form_input( array(
-                            'label'       => __( 'Deposit To', 'erp-accounting' ),
-                            'name'        => 'account_id',
-                            'placeholder' => __( 'Select an Account', 'erp-accounting' ),
-                            'type'        => 'select',
-                            'class'       => 'select2',
-                            'required'    => true,
-                            'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_bank_dropdown()
-                        ) );
+                        // if ( $account_id ) {
+                        //     $bank = WeDevs\ERP\Accounting\Model\Ledger::bank()->find($account_id);
+                        //     erp_html_form_input( array(
+                        //         'name'  => 'account_id',
+                        //         'type'  => 'hidden',
+                        //         'value' => $account_id,
+                        //     ) );
+                        //     erp_html_form_input( array(
+                        //         'label' => __( 'Deposit To', 'erp-accounting' ),
+                        //         'type'  => 'text',
+                        //         'custom_attr' => array( 'disabled' => 'disabled' ),
+                        //         'value' => $bank->name,
+                        //     ) );
+                        // } else {
+                            erp_html_form_input( array(
+                                'label'       => __( 'Deposit To', 'erp-accounting' ),
+                                'name'        => 'account_id',
+                                'placeholder' => __( 'Select an Account', 'erp-accounting' ),
+                                'type'        => 'select',
+                                'class'       => 'select2 erp-ac-deposit-dropdown',
+                                'value'    => $account_id ? $account_id : '',
+                                'required'    => true,
+                                'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_bank_dropdown()
+                            ) );    
+                        // }
+                        
                         ?>
                     </li>
                 </ul>
@@ -73,7 +95,9 @@
 
         </ul>
 
-        <?php include dirname( dirname( __FILE__ ) ) . '/common/transaction-table.php'; ?>
+        
+        <div class="erp-ac-receive-payment-table"><?php include dirname( dirname( __FILE__ ) ) . '/common/transaction-table.php';?></div>
+            
         <?php include dirname( dirname( __FILE__ ) ) . '/common/memo.php'; ?>
 
         <input type="hidden" name="field_id" value="0">

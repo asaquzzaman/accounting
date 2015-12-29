@@ -25,7 +25,7 @@ function erp_ac_get_sales_form_types() {
             'name'        => 'payment',
             'label'       => __( 'Payment', 'erp-accounting' ),
             'description' => __( '', 'erp-accounting' ),
-            'type'        => 'credit'
+            'type'        => 'debit'
         ],
         'invoice' => [
             'name'        => 'invoice',

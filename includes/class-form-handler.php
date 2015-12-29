@@ -236,7 +236,7 @@ class Form_Handler {
 
         $errors          = array();
         $field_id        = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
-
+        //$invoice_payment = isset( $_POST['invoice_payment'] ) && $_POST['invoice_payment'] ? $_POST['invoice_payment'] : false;
         $page            = isset( $_POST['page'] ) ? sanitize_text_field( $_POST['page'] ) : '';
         $type            = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
         $form_type       = isset( $_POST['form_type'] ) ? sanitize_text_field( $_POST['form_type'] ) : '';
@@ -251,8 +251,9 @@ class Form_Handler {
         $total           = isset( $_POST['price_total'] ) ? sanitize_text_field( $_POST['price_total'] ) : '';
         $files           = isset( $_POST['files'] ) ? sanitize_text_field( $_POST['files'] ) : '';
         $currency        = isset( $_POST['currency'] ) ? sanitize_text_field( $_POST['currency'] ) : 'USD';
+        
+        $line_account    = isset( $_POST['line_account'] ) ? $_POST['line_account'] : array();
 
-        // var_dump( $_POST ); die();
         $page_url        = admin_url( 'admin.php?page=' . $page );
 
         // some basic validation
@@ -291,6 +292,7 @@ class Form_Handler {
             'trans_total'     => $total,
             'files'           => $files,
             'currency'        => $currency,
+            //'invoice_payment' => $invoice_payment ? true : false
         ];
 
         // set invoice and vendor credit due to full amount
@@ -299,7 +301,7 @@ class Form_Handler {
         }
 
         $items = [];
-        foreach ($_POST['line_account'] as $key => $acc_id) {
+        foreach ( $line_account as $key => $acc_id) {
             $line_total = (float) $_POST['line_total'][ $key ];
 
             if ( ! $acc_id || ! $line_total ) {
@@ -316,11 +318,34 @@ class Form_Handler {
             ];
         }
 
-        // var_dump( $fields, $items ); die();
-
         // New or edit?
         if ( ! $field_id ) {
             $insert_id = erp_ac_insert_transaction( $fields, $items );
+
+            if ( $_POST['form_type'] == 'payment' ) {
+
+                $transaction_ids = isset( $_POST['transaction_id'] ) ? $_POST['transaction_id'] : array();
+                foreach ( $transaction_ids as $key => $id ) {
+                    $line_total  = isset( $_POST['line_total'][$key] ) ? $_POST['line_total'][$key] : 0;
+                    $transaction = erp_ac_get_transaction( $id );
+                    $due         = $transaction['due'];
+                    if ( $line_total > $due ) {
+                        continue; 
+                    }
+                    $new_due = $due - $line_total;
+                    if ( $new_due <= 0  ) {
+                        $update_field['status'] = 'closed'; 
+                    }
+
+                    $update_field['due'] = $new_due;
+                    \WeDevs\ERP\Accounting\Model\Transaction::find( $id )->update($update_field);
+                    \WeDevs\ERP\Accounting\Model\Payment::create( array(
+                        'transaction_id' => $insert_id,
+                        'parent'         => 0,
+                        'child'          => $id
+                    ) );  
+                }
+            }
         }
 
         if ( is_wp_error( $insert_id ) ) {

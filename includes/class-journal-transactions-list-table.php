@@ -46,7 +46,7 @@ class Journal_Transactions extends \WP_List_Table {
      * @return string
      */
     function column_default( $item, $column_name ) {
-
+        //var_dump( $item ); die();
         switch ( $column_name ) {
             case 'issue_date':
                 return $item->issue_date;
@@ -77,10 +77,10 @@ class Journal_Transactions extends \WP_List_Table {
                 return $item->summary;
 
             case 'debit':
-                return $item->debit;
+                return $item->form_type == 'invoice' ? $item->debit : '0.00';
 
             case 'credit':
-                return $item->credit;
+                return $item->form_type == 'payment' ? $item->credit : '0.00';
 
             default:
                 return isset( $item->$column_name ) ? $item->$column_name : '';

@@ -51,8 +51,14 @@ $credit_total = 0.00;
                     </tr>
 
                     <?php foreach ($class['ledgers'] as $ledger) {
-                        $debit        = floatval( $ledger->debit );
-                        $credit       = floatval( $ledger->credit );
+                        echo '<pre>'; print_r( $ledger ); echo '</pre>'; 
+                        if ( $ledger->id == 1 ) {
+                            $debit  =  floatval( $ledger->debit ) - floatval( $ledger->credit );
+                            $credit = '0.00';
+                        } else {
+                            $debit        = floatval( $ledger->debit );
+                            $credit       = floatval( $ledger->credit );                            
+                        }
 
                         $debit_total  += $debit;
                         $credit_total += $credit;
@@ -61,8 +67,8 @@ $credit_total = 0.00;
                             <td>
                                 <a href="#"><?php printf( '&nbsp; &nbsp; &nbsp;%s (%s)', $ledger->name, $ledger->code ); ?></a>
                             </td>
-                            <td class="col-price"><?php echo number_format( $ledger->debit, 2 ); ?></td>
-                            <td class="col-price"><?php echo number_format( $ledger->credit, 2 ); ?></td>
+                            <td class="col-price"><?php echo number_format( $debit, 2 ); ?></td>
+                            <td class="col-price"><?php echo number_format( $credit, 2 ); ?></td>
                         </tr>
                     <?php } ?>
                 <?php } ?>

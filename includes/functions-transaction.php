@@ -86,11 +86,11 @@ function erp_ac_get_transaction( $id = 0 ) {
     $cache_key   = 'erp-ac-transaction' . $id;
     $transaction = wp_cache_get( $cache_key, 'erp-accounting' );
 
-    if ( false === $count ) {
-        $transaction = WeDevs\ERP\Accounting\Model\Transaction::find( $id );
+    if ( false === $transaction ) {
+        $transaction = WeDevs\ERP\Accounting\Model\Transaction::find( $id )->toArray();
     }
 
-    return erp_array_to_object( $transaction );
+    return $transaction;
 }
 
 /**
@@ -178,6 +178,7 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
         // enter the transaction items
         $order           = 1;
         $item_entry_type = ( $form_type['type'] == 'credit' ) ? 'debit' : 'credit';
+        //$item_entry_type = $args['invoice_payment'] ? 'credit' : $item_entry_type;
         foreach ($items as $item) {
             $journal = $trans->journals()->create([
                 'ledger_id'      => $item['account_id'],
@@ -274,6 +275,32 @@ function erp_ac_get_ledger_transactions( $ledger_id, $args = [] ) {
     }
 
     return $items;
+}
+
+function erp_ac_get_customer_received_money( $customer_transaction ) {
+    $customer_transaction = is_array( $customer_transaction ) ? $customer_transaction : array();
+    $total_amount = 0;
+
+    foreach ( $customer_transaction as $key => $transaction ) {
+        if ( $transaction->status == 'closed' ) {
+            $total_amount = $total_amount + $transaction->trans_total;
+        }
+    }
+
+    return $total_amount;
+}
+
+function erp_ac_get_customer_due_amount( $customer_transaction ) {
+    $customer_transaction = is_array( $customer_transaction ) ? $customer_transaction : array();
+    $total_amount = 0;
+
+    foreach ( $customer_transaction as $key => $transaction ) {
+        if ( $transaction->status == 'awaiting_payment' ) {
+            $total_amount = $total_amount + $transaction->trans_total;
+        }
+    }
+
+    return $total_amount;
 }
 
 
