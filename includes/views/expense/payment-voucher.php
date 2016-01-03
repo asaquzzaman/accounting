@@ -1,3 +1,7 @@
+<?php
+$account = isset( $_GET['spend_money'] ) && $_GET['spend_money'] == 'true' ? true : false;
+$account_id = $account && isset( $_GET['bank'] ) ? intval( $_GET['bank'] ) : false;
+?>
 <div class="wrap erp-ac-form-wrap">
     <h2><?php _e( 'Payment Voucher', 'erp-accounting' ); ?></h2>
 
@@ -39,7 +43,7 @@
                             'placeholder' => __( 'Select an Account', 'erp-accounting' ),
                             'type'        => 'select',
                             'class'       => 'select2',
-                            'value'       => $selected_account_id,
+                            'value'       => $account_id ? $account_id : $selected_account_id,
                             'options'     => [ '' => __( '&mdash; Select &mdash;', 'erp-accounting' ) ] + erp_ac_get_bank_dropdown()
                         ) );
                         ?>

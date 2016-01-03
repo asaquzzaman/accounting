@@ -3,12 +3,11 @@
     var ERP_Accounting = {
 
         initialize: function() {
-            $( 'table.erp-ac-transaction-table' ).on( 'click', '.add-line', this.table.addRow );
-            $( 'table.erp-ac-transaction-table' ).on( 'click', '.remove-line', this.table.removeRow );
+            
+            this.incrementField();
 
             // payment voucher
-            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'click', '.remove-line', this.paymentVoucher.onChange );
-            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'change', 'input.line_qty, input.line_price, input.line_dis', this.paymentVoucher.onChange );
+            
 
             // journal entry
             $( 'table.erp-ac-transaction-table.journal-table' ).on( 'click', '.remove-line', this.journal.onChange );
@@ -19,6 +18,77 @@
 
             $('.erp-ac-form-wrap').on('change', '.erp-ac-payment-receive', this.paymentReceive );
             $('.erp-ac-form-wrap').on( 'keyup', '.erp-ac-line-due', this.lineDue );
+            $('.erp-ac-bank-account-wrap').on( 'click', '.erp-ac-transfer-money-btn', this.transferMoney );
+            $('body').on( 'change', '.erp-ac-bank-ac-drpdwn', this.checkSameAccount );
+        },
+
+        checkSameAccount: function(e) {
+            e.preventDefault();
+            var self = $(this),
+                from = $('.erp-ac-bank-ac-drpdwn-frm').val(),
+                to   = $('.erp-ac-bank-ac-drpdwn-to').val(),
+                submit_btn = self.closest('form').find( 'button[type=submit]' );
+
+            if ( from == '' || to == '' ) {
+                return;
+            }
+            
+            if ( from === to ) {
+                submit_btn.prop( 'disabled', true );
+                alert( 'Please choose another account' );
+                self.select2('val', '');
+                return;
+            } else {
+                submit_btn.prop( 'disabled', false );
+            }
+        },
+
+        initFields: function() {
+            $( '.erp-ac-date-field').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+0',
+            });
+
+            $( '.select2' ).select2({
+                theme: "classic"
+            });
+        },
+
+        transferMoney: function(e) {
+            e.preventDefault();
+            $.erpPopup({
+                title: 'Transfer Money',
+                button: 'submit',
+                id: 'erp-ac-transfer-popup',
+                _wpnonce: ERP_AC.nonce,
+                content: wperp.template('erp-ac-transfer-money-pop')().trim(),
+                extraClass: 'smaller',
+                onReady: function(modal) {
+                    $('.erp-ac-transfer-popup').find('.erp-ac-chart-drop-down').addClass('select2');
+                    modal.disableButton();
+                    ERP_Accounting.initFields();
+                },
+                onSubmit: function(modal) {
+                    wp.ajax.send( {
+                        data: this.serialize(),
+                        success: function(res) {
+                            modal.closeModal();
+                        },
+                        error: function(error) {
+                            alert( error );
+                        }
+                    });
+                }
+            }); //popup
+        },
+
+        incrementField: function() {
+            $( 'table.erp-ac-transaction-table' ).on( 'click', '.add-line', this.table.addRow );
+            $( 'table.erp-ac-transaction-table' ).on( 'click', '.remove-line', this.table.removeRow );
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'click', '.remove-line', this.paymentVoucher.onChange );
+            $( 'table.erp-ac-transaction-table.payment-voucher-table' ).on( 'change', 'input.line_qty, input.line_price, input.line_dis', this.paymentVoucher.onChange );
         },
 
         lineDue: function(e) {
@@ -46,12 +116,20 @@
                 },
 
                 success: function(res) {
-                    //console.log( $('.erp-ac-transaction-table'), res );
                     $('.erp-form').find('.erp-ac-receive-payment-table').html(res);
                 },
 
                 error: function() {
-                  $('.erp-form').find('.erp-ac-receive-payment-table').html('');  
+                    var clone_form = $('.erp-ac-receive-payment-table-clone').html();
+                    if ( clone_form == '' ) {
+                        return;
+                    }
+                    $('.erp-form').find('.erp-ac-receive-payment-table').html(clone_form);  
+                    $('.erp-form').find( '.erp-ac-selece-custom' ).addClass('select2');
+                    $('.select2').select2({
+                        'theme': 'classic'
+                    });
+                    ERP_Accounting.incrementField();
                 }
             } );
         },

@@ -110,4 +110,15 @@ $customer_class = $account_id ? 'erp-ac-payment-receive' : '';
         <?php wp_nonce_field( 'erp-ac-trans-new' ); ?>
         <?php submit_button( __( 'Receive Payment', 'erp-accounting' ), 'primary', 'submit_erp_ac_trans' ); ?>
     </form>
+    <div class="erp-ac-receive-payment-table-clone" style="display: none;">
+        <?php 
+
+    $dropdown = erp_ac_get_chart_dropdown([
+        'exclude'  => [1, 2, 3],
+        'required' => true,
+        'name'     => 'line_account[]',
+        'class'    => 'erp-ac-selece-custom'
+    ] );
+        include dirname( dirname( __FILE__ ) ) . '/common/transaction-table.php';?>
+    </div>
 </div>

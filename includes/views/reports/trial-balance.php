@@ -51,13 +51,22 @@ $credit_total = 0.00;
                     </tr>
 
                     <?php foreach ($class['ledgers'] as $ledger) {
-                        echo '<pre>'; print_r( $ledger ); echo '</pre>'; 
                         if ( $ledger->id == 1 ) {
                             $debit  =  floatval( $ledger->debit ) - floatval( $ledger->credit );
                             $credit = '0.00';
                         } else {
                             $debit        = floatval( $ledger->debit );
                             $credit       = floatval( $ledger->credit );                            
+                        }
+
+                        $new_balance = $debit - $credit;
+
+                        if ( $new_balance >= 0 ) {
+                            $debit = $new_balance;
+                            $credit = 0;
+                        } else {
+                            $credit = abs( $new_balance );
+                            $debit = 0;
                         }
 
                         $debit_total  += $debit;

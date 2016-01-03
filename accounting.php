@@ -137,6 +137,8 @@ class WeDevs_ERP_Accounting {
         define( 'WPERP_ACCOUNTING_PATH', dirname( __FILE__ ) );
         define( 'WPERP_ACCOUNTING_URL', plugins_url( '', __FILE__ ) );
         define( 'WPERP_ACCOUNTING_ASSETS', WPERP_ACCOUNTING_URL . '/assets' );
+        define( 'WPERP_ACCOUNTING_JS_TMPL', WPERP_ACCOUNTING_PATH . '/includes/views/js-templates' );
+        define( 'WPERP_ACCOUNTING_VIEWS', WPERP_ACCOUNTING_PATH . '/includes/views' );
     }
 
     /**
@@ -172,6 +174,7 @@ class WeDevs_ERP_Accounting {
      */
     public function init_actions() {
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'admin_footer', array( $this, 'admin_js_templates' ) );
     }
 
     /**
@@ -229,6 +232,19 @@ class WeDevs_ERP_Accounting {
             echo '<div class="message"><p>';
             echo __( 'Error: WP ERP Plugin is required to use accounting plugin.', 'domain' );
             echo '</p></div>';
+        }
+    }
+
+    /**
+     * Print JS templates in footer
+     *
+     * @return void
+     */
+    public function admin_js_templates() {
+        global $current_screen;
+
+        if ( $current_screen->base == 'accounting_page_erp-accounting-bank' ) {
+            erp_get_js_template( WPERP_ACCOUNTING_JS_TMPL . '/bank.php', 'erp-ac-transfer-money-pop' );    
         }
     }
 

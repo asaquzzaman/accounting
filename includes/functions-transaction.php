@@ -127,11 +127,19 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
     $table_name = $wpdb->prefix . 'erp_ac_transactions';
 
     // get valid transaction type and form type
-    if ( ! in_array( $args['type'], [ 'expense', 'sales' ] ) ) {
+    if ( ! in_array( $args['type'], [ 'expense', 'sales', 'transfer' ] ) ) {
         return new WP_Error( 'invalid-trans-type', __( 'Error: Invalid transaction type.', 'erp-accounting' ) );
     }
 
     $form_types = ( $args['type'] == 'expense' ) ? erp_ac_get_expense_form_types() : erp_ac_get_sales_form_types();
+    
+    if ( $args['type'] == 'expense' ) {
+        $form_types = erp_ac_get_expense_form_types();
+    } else if ( $args['type'] == 'transfer' ) {
+        $form_types = erp_ac_get_bank_form_types();
+    } else {
+        $form_types = erp_ac_get_sales_form_types();
+    }
 
     if ( ! array_key_exists( $args['form_type'], $form_types ) ) {
         return new WP_Error( 'invalid-form-type', __( 'Error: Invalid form type', 'erp-accounting' ) );
@@ -180,6 +188,7 @@ function erp_ac_insert_transaction( $args = [], $items = [] ) {
         $item_entry_type = ( $form_type['type'] == 'credit' ) ? 'debit' : 'credit';
         //$item_entry_type = $args['invoice_payment'] ? 'credit' : $item_entry_type;
         foreach ($items as $item) {
+
             $journal = $trans->journals()->create([
                 'ledger_id'      => $item['account_id'],
                 'type'           => 'line_item',

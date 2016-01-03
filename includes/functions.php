@@ -38,6 +38,19 @@ function erp_ac_get_sales_form_types() {
     return apply_filters( 'erp_ac_get_sales_form_types', $form_types );
 }
 
+function erp_ac_get_bank_form_types() {
+    $form_types = [
+        'bank' => [
+            'name'        => 'bank',
+            'label'       => __( 'Bank', 'erp-accounting' ),
+            'description' => __( '', 'erp-accounting' ),
+            'type'        => 'credit'
+        ],
+    ];
+
+    return apply_filters( 'erp_ac_get_bank_form_types', $form_types );
+}
+
 /**
  * Format date
  *
