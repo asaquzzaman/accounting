@@ -62,7 +62,6 @@
                 title: 'Transfer Money',
                 button: 'submit',
                 id: 'erp-ac-transfer-popup',
-                _wpnonce: ERP_AC.nonce,
                 content: wperp.template('erp-ac-transfer-money-pop')().trim(),
                 extraClass: 'smaller',
                 onReady: function(modal) {
@@ -72,7 +71,7 @@
                 },
                 onSubmit: function(modal) {
                     wp.ajax.send( {
-                        data: this.serialize(),
+                        data: this.serialize()+'&_wpnonce='+ERP_AC.nonce,
                         success: function(res) {
                             modal.closeModal();
                         },
@@ -110,7 +109,7 @@
             wp.ajax.send( {
                 data: {
                     action: 'erp_ac_payment_receive',
-                    '_wpnonce': ERP_AC.nonce,
+                    _wpnonce: ERP_AC.nonce,
                     user_id: user,
                     //account_id: $('.erp-ac-deposit-dropdown').val()
                 },

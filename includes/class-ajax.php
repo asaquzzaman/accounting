@@ -22,8 +22,7 @@ class Ajax_Handler {
     }
 
     function transfer_money() {
-
-        //$this->verify_nonce( 'erp-ac-nonce' );
+        $this->verify_nonce( 'erp-ac-nonce' );
         $from   = intval( $_POST['form_account_id'] );
         $to     = intval( $_POST['to_account_id'] ); 
         $amount = floatval( $_POST['amount'] );
@@ -73,7 +72,8 @@ class Ajax_Handler {
     }
 
     function receive_payment() {
-        //$this->verify_nonce( 'erp-ac-nonce' );
+
+        $this->verify_nonce( 'erp-ac-nonce' );
         $user_id = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : false;
         $account_id = isset( $_POST['account_id'] ) ? intval( $_POST['account_id'] ) : false;
 
